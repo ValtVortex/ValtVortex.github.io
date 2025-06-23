@@ -1,0 +1,172 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ValtVortex Cloud Access</title>
+  <link rel="icon" href="favicon.png" type="image/png">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #121212;
+      color: #f0f0f0;
+    }
+
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      background: #1a1a1a;
+      color: #ffa726;
+      padding: 1rem 2rem;
+      text-align: center;
+      font-size: 2rem;
+      font-weight: 600;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+      letter-spacing: 1px;
+    }
+
+    .page-content {
+      padding-top: 5rem;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 5rem 1.5rem 2rem;
+    }
+
+    .intro {
+      margin-bottom: 2rem;
+      font-size: 1.1rem;
+      color: #ccc;
+    }
+
+    .intro strong {
+      color: #ff9800;
+    }
+
+    .reply-box {
+      background: #1c1c1c;
+      border-radius: 14px;
+      padding: 2rem;
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4);
+    }
+
+    h3 {
+      margin-top: 0;
+      color: #ff9800;
+    }
+
+    p {
+      font-size: 1rem;
+      margin: 1rem 0;
+    }
+
+    a {
+      color: #ff9800;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    a:hover {
+      color: #ffc107;
+      text-decoration: underline;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 4rem;
+      font-size: 0.9rem;
+      color: #999;
+    }
+
+    .button-container {
+      text-align: center;
+      margin-top: 2rem;
+    }
+
+    .ripple-btn {
+      position: relative;
+      overflow: hidden;
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      color: white;
+      background: linear-gradient(to right, #333, #222);
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(255, 136, 0, 0.3);
+      transition: transform 0.2s ease;
+    }
+
+    .ripple-btn:hover {
+      background: linear-gradient(to right, #ff8500, #ffb300);
+      transform: translateY(-2px);
+    }
+
+    .ripple {
+      position: absolute;
+      background: rgba(255, 165, 0, 0.4);
+      border-radius: 50%;
+      transform: scale(0);
+      animation: ripple 0.6s linear;
+      pointer-events: none;
+    }
+
+    @keyframes ripple {
+      to {
+        transform: scale(4);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">ValtVortex Cloud</div>
+  <div class="page-content">
+    <div class="intro">
+      <p><strong>From:</strong> Ayush</p>
+      <p>Here's the list of your encrypted cloud data access points.</p>
+    </div>
+
+    <div class="reply-box">
+      <h3>📁 Mega Cloud</h3>
+      <p>🔗 <strong>Backup_Directory:</strong> <a href="https://mega.nz/folder/6kgQVRLI#A9zHTa-C6xn_YuoIQwnJaw" target="_blank" rel="noopener noreferrer">Open</a></p>
+      <p>🛠️ <strong>Decryption_setup:</strong> <a href="https://mega.nz/folder/6kgQVRLI#A9zHTa-C6xn_YuoIQwnJaw" target="_blank" rel="noopener noreferrer">Open</a></p>
+
+      <h3 style="margin-top:2rem;">📦 TeraBox Cloud</h3>
+      <p>🔗 <strong>For_Both:</strong> <a href="https://1024terabox.com/s/1umk397-Zq4c7cdH-jJeyAg" target="_blank" rel="noopener noreferrer">Open</a></p>
+    </div>
+
+    <div class="button-container">
+      <button class="ripple-btn" onclick="delayedBack(event)">Go Back</button>
+    </div>
+
+    <div class="footer">&copy; 2025 ValtVortex. All rights reserved.</div>
+  </div>
+
+  <script>
+    function delayedBack(event) {
+      const button = event.currentTarget;
+      const circle = document.createElement('span');
+      const diameter = Math.max(button.clientWidth, button.clientHeight);
+      const radius = diameter / 2;
+      circle.style.width = circle.style.height = `${diameter}px`;
+      circle.style.left = `${event.clientX - button.getBoundingClientRect().left - radius}px`;
+      circle.style.top = `${event.clientY - button.getBoundingClientRect().top - radius}px`;
+      circle.classList.add('ripple');
+
+      const existingRipple = button.querySelector('.ripple');
+      if (existingRipple) existingRipple.remove();
+
+      button.appendChild(circle);
+
+      setTimeout(() => {
+        history.back();
+      }, 600);
+    }
+  </script>
+</body>
+</html>
