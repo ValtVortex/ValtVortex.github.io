@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Host Server</title>
+  <style>
+    :root {
+      color-scheme: dark light;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #121212;
+      color: #f0f0f0;
+    }
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      box-sizing: border-box; 
+      background: #1a1a1a;
+      color: #ff9800;
+      padding: 1rem 2rem;
+      text-align: center;
+      font-size: 1.6rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+    }
+    .page-content {
+      padding-top: 4.5rem;
+    }
+    button:focus {
+      outline: none;
+    }
+    .container {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+    .reply-card, .reply-box {
+      background: #1e1e1e;
+      border-radius: 14px;
+      padding: 1.5rem;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+      margin-bottom: 2rem;
+    }
+    .reply-card2 {
+      background: none;
+      border-radius: 14px;
+      padding: 1.5rem;
+      box-shadow: 0 0px 0px rgba(0, 0, 0, 0);
+      margin-bottom: -1rem;
+    }    
+    .sender {
+      font-weight: 600;
+      color: #4fc3f7;
+      margin-bottom: 0.5rem;
+    }
+    .message {
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+    .reply-box h3 {
+      margin-top: 0;
+      margin-bottom: 1rem;
+    }
+    textarea {
+      width: 95%;
+      height: 120px;
+      padding: 1rem;
+      border: 2px solid #444;
+      border-radius: 12px;
+      font-size: 1rem;
+      background: #2a2a2a;
+      color: #fff;
+      resize: none;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    textarea:focus {
+      border-color: orange;
+      box-shadow: 0 0 10px orange;
+      outline: none;
+    }
+    .send-btn {
+      margin-top: 1rem;
+      padding: 0.75rem 1.5rem;
+      background: linear-gradient(to right, #ff6600, #ff9900);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(255, 102, 0, 0.3);
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
+    .send-btn:hover {
+      transform: translateY(-2px);
+      background: linear-gradient(to right, #ff8500, #ffb300);
+    }
+    .success-message {
+      display: none;
+      text-align: center;
+      font-size: 1rem;
+      color: lightred;
+      margin-top: 1rem;
+      animation: fadeIn 1s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .footer {
+      text-align: center;
+      margin-top: 3rem;
+      color: #999;
+      font-size: 0.9rem;
+    }
+    .actions {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 2rem;
+      flex-wrap: wrap;
+    }
+    .actions button {
+      background: #222; /* Dark background */
+      color: #f5f5f5;   /* Light text */
+      padding: 0.75rem 1.5rem;
+      border: 1px solid #444;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .actions button:hover {
+      background: #333;
+      border-color: #666;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    }
+    .actions button:active {
+      transform: scale(0.98);
+      box-shadow: none;
+    }
+    .ripple-btn {
+      position: relative;
+      overflow: hidden;
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      color: white;
+      background: linear-gradient(to right, #0d0d0d, #2e2e2e);
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(255, 136, 0, 0.3);
+      transition: transform 0.2s ease;
+    }
+    .ripple-btn:hover,
+    .ripple-btn:focus {
+      background: linear-gradient(to right, #ff8500, #ffb300)
+      transform: translateY(-2px);
+    }
+    .ripple {
+      position: absolute;
+      background: rgba(255, 165, 0, 0.4);
+      border-radius: 50%;
+      transform: scale(0);
+      animation: ripple 0.6s linear;
+      pointer-events: none;
+    }
+    .ripple-btn::after {
+      content: "";
+      position: absolute;
+      background: rgba(255, 165, 0, 0.5);
+      border-radius: 50%;
+      transform: scale(0);
+      animation: ripple 0.6s linear;
+      pointer-events: none;
+    }
+    @keyframes ripple {
+      to {
+        transform: scale(4);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">Host Server</div>
+  <div class="page-content">
+    <div class="reply-card2">
+     <p>WELCOME!!</p>
+     <p>Here's the links of the encrypted cloud data</p>
+    </div>
+    <div class="container">
+      <div class="reply-box">
+        <h3><strong >Mega_cloud</strong></h3>
+        <p><strong >Backup_Directory:</strong>https://mega.nz/folder/Ol4D3YYA#5iIGihH3mHR8a1i3xVi7Pg</p>
+        <p><strong >Decryption_setup:</strong>https://mega.nz/folder/6kgQVRLI#A9zHTa-C6xn_YuoIQwnJaw</p>
+        <h3>Terabox_cloud</h3>
+        <p><strong >For_Both:</strong>https://1024terabox.com/s/1umk397-Zq4c7cdH-jJeyAg</p>
+      </div>
+    </div>
+    <div class="footer">
+      <button class="ripple-btn" onclick="delayedBack(event)">Go Back</button>
+    </div>
+    <div class="footer">&copy; 2025 Support System. All rights reserved.</div>
+  </div>
+  <script>
+    function delayedBack(event) {
+      const button = event.currentTarget;
+      const circle = document.createElement('span');
+      const diameter = Math.max(button.clientWidth, button.clientHeight);
+      const radius = diameter / 2;
+      circle.style.width = circle.style.height = `${diameter}px`;
+      circle.style.left = `${event.clientX - button.getBoundingClientRect().left - radius}px`;
+      circle.style.top = `${event.clientY - button.getBoundingClientRect().top - radius}px`;
+      circle.classList.add('ripple');
+      const existingRipple = button.querySelector('.ripple');
+      if (existingRipple) existingRipple.remove();
+      button.appendChild(circle);
+      setTimeout(() => {
+        history.back();
+      }, 600);
+    }
+  </script>
+</body>
+</html>
