@@ -1,0 +1,183 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ValtVortex Cloud Access</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #121212;
+      color: #f0f0f0;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      background: #1a1a1a;
+      color: #ffa726;
+      padding: 0.6rem 1.2rem;
+      font-size: 1.6rem;
+      font-weight: 600;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+      letter-spacing: 0.8px;
+    }
+
+    .header img {
+      height: 28px;
+      width: 28px;
+    }
+
+    .page-content {
+      padding-top: 4.5rem;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 5rem 1.5rem 2rem;
+    }
+
+    .intro {
+      margin-bottom: 2rem;
+      font-size: 1.1rem;
+      color: #ccc;
+    }
+
+    .intro strong {
+      color: #ff9800;
+    }
+
+    .reply-box {
+      background: #1c1c1c;
+      border-radius: 14px;
+      padding: 2rem;
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4);
+    }
+
+    h3 {
+      margin-top: 0;
+      color: #ff9800;
+    }
+
+    p {
+      font-size: 1rem;
+      margin: 1rem 0;
+    }
+
+    a {
+      color: #ff9800;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    a:hover {
+      color: #ffc107;
+      text-decoration: underline;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 4rem;
+      font-size: 0.9rem;
+      color: #999;
+    }
+
+    .button-container {
+      text-align: center;
+      margin-top: 2rem;
+    }
+
+    .ripple-btn {
+      position: relative;
+      overflow: hidden;
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      color: white;
+      background: linear-gradient(to right, #333, #222);
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(255, 136, 0, 0.3);
+      transition: transform 0.2s ease;
+    }
+
+    .ripple-btn:hover {
+      background: linear-gradient(to right, #ff8500, #ffb300);
+      transform: translateY(-2px);
+    }
+
+    .ripple {
+      position: absolute;
+      background: rgba(255, 165, 0, 0.4);
+      border-radius: 50%;
+      transform: scale(0);
+      animation: ripple 0.6s linear;
+      pointer-events: none;
+    }
+
+    @keyframes ripple {
+      to {
+        transform: scale(4);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAIAAAD9b0jDAAAC1ElEQVR4nN2VO28bRxDHZ3b3bu9OJI8irQd4J8lnASrSJAgQIDCQTn2QJr2AFKmCfAnDpYsU+RLpAwQp4sp25cawEUSgJL6OkhiG0h3Je+640AOhjmEYQEXgwTS7i/3hvzuz/8VS1YX7DnbvxA8PmhPQfUDpNjnSZ5spwhWXZnNpKDIUun6bMcrHW9n3nwYpcCHl35cQcS5aFKd00xS6fjtUObug5Nnnnd/a5puoLjUEAkDMk4SUqq1tDPp9miXPVcpubgAIAIH2twIp4OutyzSOr28hz6NwvOm6dr1OdFfsgkIhAExTdvDR8Mvdi0kA21bGVXYFiMLQrq2uNRpEqrhzUfWjDL/aGz39ws+mkEVwGGoJMURMplMhNMfzAHF8Gf4HpanCTzanP+x39UxlIRwG4sffK4bU8jTN4sR95EnDCEaj024HEZeCElGm4JuPhxUjjwMYxey7F7VeYukaj8Jww3Uqq6txHHeaTQBcFsoQ1XTy0zv7fChMDk9e2y8HVqVsRONx2bbXHYeIekfHSZJIyyycfg6UpGFs7+4+qNs/v8WDX7b/uNSe+7JcMtI45ow5nsc4H/j+6M+BWSpBQSYU+5SIDCl1KRueB3D06+Ff3ybbGcSg8jSKdvb2TMsKLi78VluurDDOlcr/HYrIzrpdLsRao9HwPEB81R4ahpVOwg3XrdbrSZJ0mk0muJA60XxTKEJBMwy/1QKiNcdpPHwIiOe9Xrla3XBdIvJPTuIosuzKAo8pHh+4JpgQfqtFAOuO09jZ4ULYtRoXYtDvD8/OzUr56mksC73harJU6rdaQLTuOJuuCwCTIPCPT3TLZIIvtsJ/aH6ia267fdrtAmKe551mExjTpCwQ746LSkllGeMciBjncmWl324jQJqkk/HYqlTuPMo8y4qScO5vyhgCXlkcKKVIEd7ErDAitZyfAoBSM8Z+zSIqesfc+MB+0/8F9D2gSFGWoGIU3AAAAABJRU5ErkJggg==" alt="ValtVortex Logo">
+    ValtVortex Cloud
+  </div>
+
+  <div class="page-content">
+    <div class="intro">
+      <p><strong>From:</strong> Ayush</p>
+      <p>Here's the list of your encrypted cloud data access points.</p>
+    </div>
+
+    <div class="reply-box">
+      <h3>📁 Mega Cloud</h3>
+      <p>🔗 <strong>Backup_Directory:</strong> <a href="https://mega.nz/folder/6kgQVRLI#A9zHTa-C6xn_YuoIQwnJaw" target="_blank" rel="noopener noreferrer">Open</a></p>
+      <p>🛠️ <strong>Decryption_setup:</strong> <a href="https://mega.nz/folder/6kgQVRLI#A9zHTa-C6xn_YuoIQwnJaw" target="_blank" rel="noopener noreferrer">Open</a></p>
+
+      <h3 style="margin-top:2rem;">📦 TeraBox Cloud</h3>
+      <p>🔗 <strong>For_Both:</strong> <a href="https://1024terabox.com/s/1umk397-Zq4c7cdH-jJeyAg" target="_blank" rel="noopener noreferrer">Open</a></p>
+    </div>
+
+    <div class="button-container">
+      <button class="ripple-btn" onclick="delayedBack(event)">Go Back</button>
+    </div>
+
+    <div class="footer">&copy; 2025 ValtVortex. All rights reserved.</div>
+  </div>
+
+  <script>
+    function delayedBack(event) {
+      const button = event.currentTarget;
+      const circle = document.createElement('span');
+      const diameter = Math.max(button.clientWidth, button.clientHeight);
+      const radius = diameter / 2;
+      circle.style.width = circle.style.height = `${diameter}px`;
+      circle.style.left = `${event.clientX - button.getBoundingClientRect().left - radius}px`;
+      circle.style.top = `${event.clientY - button.getBoundingClientRect().top - radius}px`;
+      circle.classList.add('ripple');
+
+      const existingRipple = button.querySelector('.ripple');
+      if (existingRipple) existingRipple.remove();
+
+      button.appendChild(circle);
+
+      setTimeout(() => {
+        history.back();
+      }, 600);
+    }
+  </script>
+</body>
+</html>
