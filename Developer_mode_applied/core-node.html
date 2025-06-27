@@ -398,9 +398,12 @@
           else if (log.includes("[ DEVLOG ]")) p.style.color = "#c28fff";
 
           p.textContent = "[" + getTimestamp() + "] " + log;
+          p.style.fontSize = "0.85rem";
+          p.style.fontFamily = "monospace";
+          p.style.lineHeight = "1.3";
           content.appendChild(p);
           panel.scrollTop = panel.scrollHeight;
-        }, 800 + index * 500);
+        }, 800 + index * 600);
       });
       
       cursor.style.display = "inline-block";
