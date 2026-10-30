@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#10131a" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f4f6fa" media="(prefers-color-scheme: light)">
+<title>ValtVortex — Secure Access</title>
+<style>
+:root {
+  color-scheme: light dark;
+  --page: #f2f4f8; --surface: rgba(255,255,255,.86); --surface-solid:#fff;
+  --text:#171b24; --muted:#626b7a; --line:rgba(24,32,48,.13);
+  --accent:#b96b0b; --accent2:#e79a32; --field:#f8f9fc;
+  --shadow:0 24px 70px rgba(27,39,61,.14); --error:#bd3434;
+}
+@media (prefers-color-scheme: dark) {
+ :root {
+  --page:#090b10; --surface:rgba(20,24,33,.88); --surface-solid:#141821;
+  --text:#f3f5f8; --muted:#a1a9b7; --line:rgba(255,255,255,.12);
+  --accent:#ffd18a; --accent2:#f0a23b; --field:rgba(5,7,11,.58);
+  --shadow:0 30px 90px rgba(0,0,0,.48); --error:#ff8585;
+ }
+}
+* {box-sizing:border-box}
+html {min-height:100%; background:var(--page)}
+body {
+ min-height:100vh; min-height:100svh; margin:0; padding:clamp(16px,4vw,36px);
+ display:grid; place-items:center; overflow-x:hidden;
+ color:var(--text); background:
+ radial-gradient(ellipse at 50% 0%, color-mix(in srgb,var(--accent2) 13%,transparent),transparent 42%),
+ var(--page);
+ font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+ -webkit-font-smoothing:antialiased; transition:background-color .25s,color .25s;
+}
+main {width:min(100%,460px); margin:auto}
+.card {
+ position:relative; padding:clamp(24px,6vw,44px);
+ border:1px solid var(--line); border-radius:26px;
+ background:var(--surface); box-shadow:var(--shadow);
+ backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px);
+}
+.card:before {
+ content:""; position:absolute; top:0; left:14%; right:14%; height:1px;
+ background:linear-gradient(90deg,transparent,var(--accent2),transparent);
+}
+.brand {display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:28px}
+.mark {
+ width:38px;height:38px;display:grid;place-items:center;border-radius:12px;
+ border:1px solid color-mix(in srgb,var(--accent2) 55%,var(--line));
+ color:var(--accent);font-weight:900;font-size:19px;
+ background:color-mix(in srgb,var(--accent2) 12%,transparent)
+}
+.brand-name {font-size:.77rem;font-weight:800;letter-spacing:.2em;text-transform:uppercase}
+.eyebrow {margin:0 0 12px;text-align:center;color:var(--accent);font-size:.7rem;font-weight:800;letter-spacing:.18em;text-transform:uppercase}
+h1 {margin:0;text-align:center;white-space:nowrap;font-size:clamp(1.3rem,5.7vw,2.05rem);line-height:1.2;letter-spacing:-.06em}
+h1 span {color:var(--accent)}
+.subtitle {max-width:315px;margin:14px auto 30px;text-align:center;color:var(--muted);font-size:.93rem;line-height:1.65}
+label {display:block;margin:0 0 9px 2px;font-size:.83rem;font-weight:700}
+.input-wrap {position:relative}
+input {
+ width:100%;min-height:54px;padding:14px 66px 14px 15px;border:1px solid var(--line);
+ border-radius:13px;outline:none;background:var(--field);color:var(--text);
+ font:inherit;font-size:1rem;transition:border-color .2s,box-shadow .2s
+}
+input::placeholder {color:var(--muted);opacity:.75}
+input:focus {border-color:var(--accent2);box-shadow:0 0 0 4px color-mix(in srgb,var(--accent2) 17%,transparent)}
+.toggle {position:absolute;right:8px;top:50%;transform:translateY(-50%);min-height:36px;padding:0 9px;border:0;border-radius:8px;background:transparent;color:var(--muted);font:inherit;font-size:.78rem;font-weight:700;cursor:pointer}
+.toggle:hover {color:var(--accent)}
+.submit {
+ width:100%;min-height:54px;margin-top:14px;border:0;border-radius:13px;
+ background:linear-gradient(105deg,var(--accent2),#ffd18a);color:#241707;
+ box-shadow:0 10px 25px color-mix(in srgb,var(--accent2) 22%,transparent);
+ font:inherit;font-size:.95rem;font-weight:850;cursor:pointer;
+ transition:transform .18s,filter .18s,box-shadow .18s
+}
+.submit:hover {transform:translateY(-2px);filter:brightness(1.04)}
+.submit:active {transform:translateY(0)}
+button:focus-visible {outline:3px solid var(--accent2);outline-offset:3px}
+.error {min-height:1.4em;margin:12px 1px 0;color:var(--error);font-size:.84rem}
+.note {margin:22px 0 0;text-align:center;color:var(--muted);font-size:.73rem}
+footer {margin:20px 0 0;text-align:center;color:var(--muted);font-size:.73rem;opacity:.8}
+@media(max-width:360px) {
+ body {padding:14px}
+ .card {padding:23px 17px;border-radius:21px}
+ h1 {font-size:clamp(1.15rem,5.7vw,1.3rem);letter-spacing:-.065em}
+ .subtitle {font-size:.87rem;margin-bottom:24px}
+}
+@media(prefers-reduced-motion:reduce) {
+ *,*:before,*:after {scroll-behavior:auto!important;transition:none!important;animation:none!important}
+}
+</style>
+</head>
+<body>
+<main>
+ <section class="card" aria-labelledby="title">
+  <div class="brand"><div class="mark" aria-hidden="true">V</div><div class="brand-name">ValtVortex</div></div>
+  <p class="eyebrow">Private access portal</p>
+  <h1 id="title">Welcome to <span>ValtVortex.</span></h1>
+  <p class="subtitle">A focused space for your tools and resources. Enter your access password to continue.</p>
+  <form id="access-form" novalidate>
+   <label for="password">Access password</label>
+   <div class="input-wrap">
+    <input id="password" name="password" type="password" placeholder="Enter your password" autocomplete="current-password" autocapitalize="none" spellcheck="false" required aria-describedby="error">
+    <button class="toggle" id="toggle" type="button" aria-label="Show password" aria-pressed="false">Show</button>
+   </div>
+   <button class="submit" type="submit">Continue securely&nbsp; →</button>
+   <p class="error" id="error" role="alert" aria-live="polite"></p>
+  </form>
+  <p class="note">Access is intended for authorised visitors</p>
+ </section>
+ <footer>© 2026 ValtVortex. All rights reserved.</footer>
+</main>
+<script>
+"use strict";
+const destinations = {
+ "26032025":"hebiwkh78jebh$82osk+hebo+w&ienl$oe3jjs.html",
+ "24102024":"hebiwkh78jebh$82osk+hebo+w&ienl$oe3jjs.html",
+ "valtvortex":"hoeyblao$62883+jsbi720wx9373hndh.html"
+};
+const form=document.getElementById("access-form");
+const input=document.getElementById("password");
+const error=document.getElementById("error");
+const toggle=document.getElementById("toggle");
+form.addEventListener("submit",event=>{
+ event.preventDefault();
+ const destination=destinations[input.value.trim().toLowerCase()];
+ if(destination){error.textContent="";window.location.assign(destination);}
+ else {error.textContent="That password doesn't match. Please try again.";input.setAttribute("aria-invalid","true");input.focus();}
+});
+input.addEventListener("input",()=>{error.textContent="";input.removeAttribute("aria-invalid");});
+toggle.addEventListener("click",()=>{
+ const show=input.type==="password";input.type=show?"text":"password";
+ toggle.textContent=show?"Hide":"Show";toggle.setAttribute("aria-label",show?"Hide password":"Show password");
+ toggle.setAttribute("aria-pressed",String(show));input.focus();
+});
+</script>
+</body>
+</html>
