@@ -45,12 +45,26 @@ async function loadItems(){
   desc.textContent=item.message;
   meta.textContent=[item.submitted_by,item.contact_email,item.page_url,'Status: '+item.status,new Date(item.created_at).toLocaleString()].filter(Boolean).join(' | ');
   card.append(title,desc,meta);
-  for(const [label,status] of [['Mark reviewing','reviewing'],['Mark resolved','resolved'],['Close','closed']]){
+  for(const [label,status] of [['Mark seen','reviewing'],['Mark resolved','resolved'],['Close','closed']]){
    const b=document.createElement('button');b.textContent=label;b.onclick=()=>moderateFeedback(item.id,status);actions.append(b);
   }
-  card.append(actions);inbox.append(card);
+  const remove=document.createElement('button');remove.textContent='Delete feedback';remove.className='reject';remove.onclick=()=>deleteFeedback(item.id,item.subject);actions.append(remove);\n  card.append(actions);inbox.append(card);
  }
 
+}
+async function deletePlace(id,name){
+ if(!confirm('Permanently remove "'+name+'" from the community? This cannot be undone.'))return;
+ dashmessage.textContent='Removing place…';
+ const{error}=await db.from('community_submissions').delete().eq('id',id);
+ if(error){dashmessage.textContent='Could not remove place: '+error.message;return}
+ dashmessage.textContent='Place removed from the public directory.';await loadItems();
+}
+async function deleteFeedback(id,subject){
+ if(!confirm('Permanently delete this feedback item? This cannot be undone.'))return;
+ dashmessage.textContent='Deleting feedback…';
+ const{error}=await db.from('community_feedback').delete().eq('id',id);
+ if(error){dashmessage.textContent='Could not delete feedback: '+error.message;return}
+ dashmessage.textContent='Feedback deleted.';await loadItems();
 }
 async function moderateFeedback(id,status){
  const{data:{user}}=await db.auth.getUser();
