@@ -34,6 +34,14 @@ async function loadItems(){
    }
    card.append(actions)
   }
+  if(item.status==='approved'){
+   const remove=document.createElement('button');
+   remove.textContent='Remove approved place';
+   remove.className='reject';
+   remove.onclick=()=>deletePlace(item.id,item.place_name);
+   actions.append(remove);
+   card.append(actions);
+  }
   $('#items').append(card)
  }
  const inbox=$('#feedback-items');inbox.replaceChildren();
