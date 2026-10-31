@@ -17,7 +17,7 @@ async function showDashboard(session){
 }
 async function loadItems(){
  dashmessage.textContent='Loading submissions…';
- const[{data,error},{data:feedback, error:feedbackError}]=await Promise.all([db.from('community_submissions').select('*').order('created_at',{ascending:false}),db.from('community_feedback').select('*').order('created_at',{ascending:false})]);
+ const[{data,error},{data:feedback, error:feedbackError}]=await Promise.all([db.from('admin_community_submissions').select('*').order('created_at',{ascending:false}),db.from('community_feedback').select('*').order('created_at',{ascending:false})]);
  if(error){dashmessage.textContent='Could not load place submissions: '+error.message;return}
  $('#items').replaceChildren();
  if(!data.length){$('#items').textContent='No community submissions yet.';} 
