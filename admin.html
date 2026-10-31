@@ -56,7 +56,8 @@ async function loadItems(){
   for(const [label,status] of [['Mark seen','reviewing'],['Mark resolved','resolved'],['Close','closed']]){
    const b=document.createElement('button');b.textContent=label;b.onclick=()=>moderateFeedback(item.id,status);actions.append(b);
   }
-  const remove=document.createElement('button');remove.textContent='Delete feedback';remove.className='reject';remove.onclick=()=>deleteFeedback(item.id,item.subject);actions.append(remove);\n  card.append(actions);inbox.append(card);
+  const remove=document.createElement('button');remove.textContent='Delete feedback';remove.className='reject';remove.onclick=()=>deleteFeedback(item.id,item.subject);actions.append(remove);
+  card.append(actions);inbox.append(card);
  }
 
 }
