@@ -516,29 +516,11 @@
     </section>
 
     <section class="directory-section" id="discoveries" aria-labelledby="discoveries-heading">
-      <div class="section-heading"><div><span class="section-kicker">05 / Places &amp; moments</span><h2 id="discoveries-heading">Discoveries</h2><p>Interesting Google Maps locations, local shops, places to visit, photos, clips, and personal reviews.</p></div></div>
-      <div class="discovery-toolbar"><p id="discovery-status" role="status" aria-live="polite">Loading published discoveries…</p><button class="button" id="export-discoveries" type="button">Export entries as JSON</button></div>
+      <div class="section-heading"><div><span class="section-kicker">05 / Places &amp; moments</span><h2 id="discoveries-heading">Discoveries</h2><p>Explore community-shared places, local shops, attractions and recommendations.</p></div></div>
+      <div class="discovery-toolbar"><p>Share a place with the community. Every submission is reviewed before it appears publicly.</p><a class="button primary" href="./community.html">Explore &amp; submit a place ↗</a></div>
       <div class="discovery-grid" id="discovery-grid" aria-live="polite"></div>
-      <p class="empty-state" id="discovery-empty">No places or media have been published yet. Add a local draft below, or add public entries to <code>discoveries.json</code>.</p>
-      <details class="entry-form-panel" id="add-discovery">
-        <summary><strong>Add a place, shop, photo or clip</strong></summary>
-        <p>Save a draft on this device, then export it as JSON to publish it through GitHub Pages. No account or third-party service is used by this form.</p>
-        <form class="entry-form" id="discovery-form">
-          <div class="field"><label for="entry-name">Name / title *</label><input id="entry-name" name="name" maxlength="100" required placeholder="e.g. A great local café"></div>
-          <div class="field"><label for="entry-type">Category</label><select id="entry-type" name="type"><option>Place</option><option>Shop</option><option>Food &amp; café</option><option>Travel</option><option>Scenic location</option><option>Photo story</option><option>Video clip</option><option>Other</option></select></div>
-          <div class="field"><label for="entry-map">Google Maps link</label><input id="entry-map" name="mapUrl" type="url" placeholder="https://maps.app.goo.gl/…"><small>Use the location's Share → Copy link address.</small></div>
-          <div class="field"><label for="entry-address">Address / area</label><input id="entry-address" name="address" maxlength="240" placeholder="Locality, city"></div>
-          <div class="field"><label for="entry-owner">Owner / contact name</label><input id="entry-owner" name="owner" maxlength="100" placeholder="Optional public business contact"></div>
-          <div class="field"><label for="entry-phone">Public phone / WhatsApp</label><input id="entry-phone" name="phone" type="tel" maxlength="40" placeholder="Optional public business number"></div>
-          <div class="field"><label for="entry-website">Website</label><input id="entry-website" name="website" type="url" placeholder="https://example.com"></div>
-          <div class="field"><label for="entry-photos">Photo URLs or repository paths</label><textarea id="entry-photos" name="photos" placeholder="One image URL or relative image path per line"></textarea><small>For repository images, add the image file to your repo and enter its relative path, e.g. images/shop-front.jpg.</small></div>
-          <div class="field full"><label for="entry-videos">Clip / video URLs</label><textarea id="entry-videos" name="videos" placeholder="One video URL per line (YouTube, etc.)"></textarea></div>
-          <div class="field full"><label for="entry-review">Review / notes</label><textarea id="entry-review" name="review" maxlength="2000" placeholder="What makes this place or moment worth sharing?"></textarea></div>
-          <div class="form-actions"><button class="button primary" type="submit">Save local draft</button><button class="button" type="reset">Clear form</button></div>
-          <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
-        </form>
-      </details>
-      <details class="info-disclosure boxed-disclosure"><summary>How do I make an entry visible to everyone?</summary><p>GitHub Pages is static hosting: this form stores drafts only in this browser. Use <strong>Export entries as JSON</strong>, then add the exported objects to the <code>items</code> array in <code>discoveries.json</code> and upload any referenced images to your repository. Commit both the JSON and image files. The published page will then display them for all visitors.</p></details>
+      <p class="empty-state" id="discovery-empty">Community discoveries are available on the community page.</p>
+      <p class="fine-print">Want to suggest a change or report a problem? Use the feedback form on the community page. No account is required.</p>
     </section>
 
     <section class="directory-section" id="security" aria-labelledby="security-heading">
