@@ -36,6 +36,21 @@ test.beforeEach(async ({ page }) => {
   }));
 });
 
+test('visitor account is optional and guest contribution form stays available', async ({ page }) => {
+  await page.goto('/community.html');
+  await expect(page.locator('#account-panel')).toBeVisible();
+  await expect(page.locator('#form')).toBeVisible();
+  await expect(page.locator('#send')).toBeEnabled();
+});
+
+test('visitor can request a passwordless email sign-in code', async ({ page }) => {
+  await page.goto('/community.html');
+  await page.locator('#account-email').fill('visitor@example.com');
+  await page.locator('#account-send').click();
+  await expect(page.locator('#account-status')).toContainText('Code sent');
+  await expect(page.locator('#account-verify-form')).toBeVisible();
+});
+
 test('place form explains missing required information without sending', async ({ page }) => {
   await page.goto('/community.html');
   await page.locator('#send').click();
