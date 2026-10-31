@@ -15,8 +15,9 @@ export function createClient() {
   });
   return {
     from: table,
+    rpc(name) { globalThis.__testSupabaseCalls.push({ rpc: name }); return Promise.resolve({ data: [{ id: 'test-id', place_name: 'My saved place', category: 'Shop', status: 'pending', created_at: '2026-10-31T00:00:00Z' }], error: null }); },
     auth: {
-      getSession: async () => ({ data: { session: null }, error: null }),
+      getSession: async () => ({ data: { session: globalThis.__testSession || null }, error: null }),
       onAuthStateChange: () => ({ data: { subscription: { unsubscribe() {} } } }),
       signOut: async () => ({ error: null }),
       signInWithOtp: async () => ({ error: null }),
@@ -41,6 +42,25 @@ test('visitor account is optional and guest contribution form stays available', 
   await expect(page.locator('#account-panel')).toBeVisible();
   await expect(page.locator('#form')).toBeVisible();
   await expect(page.locator('#send')).toBeEnabled();
+});
+
+test('signed-in visitor sees only their own linked place submissions', async ({ page }) => {
+  await page.addInitScript(() => {
+    globalThis.__testSession = {
+      user: {
+        id: 'visitor-id',
+        email: 'visitor@example.com',
+        user_metadata: { display_name: 'Community Visitor' },
+        app_metadata: {}
+      }
+    };
+  });
+  await page.goto('/community.html');
+  await expect(page.locator('#account-welcome')).toContainText('visitor@example.com');
+  await expect(page.locator('#my-submissions')).toContainText('My saved place');
+  await expect(page.locator('#email')).toHaveValue('visitor@example.com');
+  const calls = await page.evaluate(() => globalThis.__testSupabaseCalls);
+  expect(calls.some(call => call.rpc === 'my_community_submissions')).toBeTruthy();
 });
 
 test('visitor can request a passwordless email sign-in code', async ({ page }) => {
