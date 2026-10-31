@@ -40,6 +40,8 @@ test.beforeEach(async ({ page }) => {
 test('visitor account is optional and guest contribution form stays available', async ({ page }) => {
   await page.goto('/community.html');
   await expect(page.locator('#account-panel')).toBeVisible();
+  await expect(page.locator('#account-verify-form')).toBeHidden();
+  await expect(page.locator('#account-session')).toBeHidden();
   await expect(page.locator('#form')).toBeVisible();
   await expect(page.locator('#send')).toBeEnabled();
 });
