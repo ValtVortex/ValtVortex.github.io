@@ -126,6 +126,24 @@ test('guest can send feedback without providing optional contact details', async
   expect(calls[0].row.contact_email).toBeNull();
 });
 
+test('admin dashboard uses the protected moderation endpoint', async ({ page }) => {
+  await page.addInitScript(() => {
+    globalThis.__testSession = {
+      user: {
+        id: 'admin-id',
+        email: 'admin@example.com',
+        app_metadata: { role: 'admin' },
+        user_metadata: {}
+      }
+    };
+  });
+  await page.goto('/admin.html');
+  await expect(page.locator('#dashboard')).toBeVisible();
+  await expect(page.locator('#items')).toContainText('My saved place');
+  const calls = await page.evaluate(() => globalThis.__testSupabaseCalls);
+  expect(calls.some(call => call.rpc === 'admin_list_community_submissions')).toBeTruthy();
+});
+
 test('admin page loads without JavaScript syntax errors', async ({ page }) => {
   const pageErrors = [];
   page.on('pageerror', error => pageErrors.push(error.message));
