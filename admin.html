@@ -1,9 +1,77 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><title>Admin moderation · ValtVortex</title><style>
-:root{color-scheme:light dark;--bg:#0b1016;--panel:#131d28;--line:#2b3b4b;--text:#eef4f8;--muted:#a5b3c0;--cyan:#69dce5;--orange:#ff9d52}@media(prefers-color-scheme:light){:root{--bg:#f5f7fa;--panel:#fff;--line:#d5dee7;--text:#182432;--muted:#526273;--cyan:#087f8c;--orange:#a94f0a}}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 system-ui,sans-serif}main{width:min(1000px,100% - 32px);margin:40px auto}a{color:var(--cyan)}.panel,article{padding:20px;border:1px solid var(--line);border-radius:16px;background:var(--panel);margin:14px 0}input{padding:12px;border:1px solid var(--line);border-radius:9px;background:var(--bg);color:var(--text);font:inherit;width:min(100%,360px)}button{padding:9px 14px;margin:5px;border:0;border-radius:8px;background:var(--orange);color:#241707;font:inherit;font-weight:750;cursor:pointer}.reject{background:#b84b4b;color:white}.muted{color:var(--muted)}.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.hidden{display:none!important}</style></head><body><main><a href="community.html">← Community places</a><h1>Community moderation</h1><section class="panel" id="login"><p>Administrator sign-in</p><form id="loginform"><input id="email" type="email" placeholder="Admin email" required><button>Send secure sign-in link</button></form><p id="message" class="muted" role="status"></p></section><section id="dashboard" class="hidden"><div class="row"><strong id="who"></strong><button id="refresh">Refresh</button><button id="logout">Sign out</button></div><div id="items"></div></section></main><script type="module">
-import{createClient}from'https://esm.sh/@supabase/supabase-js@2.57.0';const db=createClient('https://gtortwrmnxyphzceloub.supabase.co','sb_publishable_r5aoJXeWqysL3Ghkziw-6g_8Ds-vVsq'),$=s=>document.querySelector(s),msg=$('#message');
-$('#loginform').addEventListener('submit',async e=>{e.preventDefault();const{error}=await db.auth.signInWithOtp({email:$('#email').value,options:{emailRedirectTo:'https://valtvortex.github.io/admin.html'}});msg.textContent=error?error.message:'Check your inbox for the sign-in link.'});
-async function load(){const{data:{user}}=await db.auth.getUser();if(!user){$('#login').classList.remove('hidden');$('#dashboard').classList.add('hidden');return}if(user.app_metadata?.role!=='admin'){msg.textContent='This account is not authorized as an administrator.';await db.auth.signOut();return}$('#login').classList.add('hidden');$('#dashboard').classList.remove('hidden');$('#who').textContent='Signed in: '+user.email;const{data,error}=await db.from('community_submissions').select('*').order('created_at',{ascending:false});if(error){$('#items').textContent=error.message;return}$('#items').replaceChildren();for(const item of data){const card=document.createElement('article'),title=document.createElement('h2'),desc=document.createElement('p'),meta=document.createElement('p'),actions=document.createElement('div');title.textContent=item.place_name+' · '+item.category;desc.textContent=item.description;meta.textContent=[item.address,item.maps_url,item.submitted_by,item.contact_email,'Status: '+item.status].filter(Boolean).join(' | ');card.append(title,desc,meta);if(item.status==='pending'){for(const [label,status] of [['Approve','approved'],['Reject','rejected']]){const b=document.createElement('button');b.textContent=label;if(status==='rejected')b.className='reject';b.onclick=()=>moderate(item.id,status);actions.append(b)}card.append(actions)}$('#items').append(card)}}
-async function moderate(id,status){const{data:{user}}=await db.auth.getUser();const{error}=await db.from('community_submissions').update({status,reviewed_at:new Date().toISOString(),reviewed_by:user.id}).eq('id',id);if(error){msg.textContent=error.message;return}await load()}
-$('#refresh').onclick=load;$('#logout').onclick=async()=>{await db.auth.signOut();load()};db.auth.onAuthStateChange(()=>load());load();
+:root{color-scheme:light dark;--bg:#0b1016;--panel:#131d28;--line:#2b3b4b;--text:#eef4f8;--muted:#a5b3c0;--cyan:#69dce5;--orange:#ff9d52}@media(prefers-color-scheme:light){:root{--bg:#f5f7fa;--panel:#fff;--line:#d5dee7;--text:#182432;--muted:#526273;--cyan:#087f8c;--orange:#a94f0a}}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 system-ui,sans-serif}main{width:min(1000px,100% - 32px);margin:40px auto}a{color:var(--cyan)}.panel,article{padding:20px;border:1px solid var(--line);border-radius:16px;background:var(--panel);margin:14px 0}input{display:block;padding:12px;border:1px solid var(--line);border-radius:9px;background:var(--bg);color:var(--text);font:inherit;width:min(100%,360px);margin:8px 0 14px}label{display:block;font-weight:700}button{padding:9px 14px;margin:5px 5px 5px 0;border:0;border-radius:8px;background:var(--orange);color:#241707;font:inherit;font-weight:750;cursor:pointer}.reject{background:#b84b4b;color:white}.muted{color:var(--muted)}.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.hidden{display:none!important}#message{min-height:1.5em;color:var(--cyan)}
+</style></head><body><main><a href="community.html">← Community places</a><h1>Community moderation</h1><section class="panel" id="login"><h2>Administrator sign-in</h2><p>Enter your administrator email. We will send a one-time 6-digit code.</p><form id="emailform"><label for="email">Admin email</label><input id="email" type="email" autocomplete="email" placeholder="Admin email" required><button id="sendcode" type="submit">Send sign-in code</button></form><form id="verifyform" class="hidden"><label for="token">6-digit email code</label><input id="token" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" placeholder="123456" required><button id="verifycode" type="submit">Verify code &amp; sign in</button></form><p id="message" role="status" aria-live="polite"></p></section><section id="dashboard" class="hidden"><div class="row"><strong id="who"></strong><button id="refresh">Refresh</button><button id="logout">Sign out</button></div><p id="dashmessage" class="muted" role="status"></p><div id="items"></div></section></main>
+<script type="module">
+import{createClient}from'https://esm.sh/@supabase/supabase-js@2.57.0';
+const db=createClient('https://gtortwrmnxyphzceloub.supabase.co','sb_publishable_r5aoJXeWqysL3Ghkziw-6g_8Ds-vVsq'),$=s=>document.querySelector(s);
+const message=$('#message'),dashmessage=$('#dashmessage');
+let pendingEmail='';
+function showLogin(text=''){ $('#login').classList.remove('hidden');$('#dashboard').classList.add('hidden');if(text)message.textContent=text; }
+async function showDashboard(session){
+ const user=session?.user;
+ if(!user){showLogin();return}
+ if(user.app_metadata?.role!=='admin'){showLogin('This account is not authorised as an administrator.');await db.auth.signOut();return}
+ $('#login').classList.add('hidden');$('#dashboard').classList.remove('hidden');$('#who').textContent='Signed in: '+user.email;
+ await loadItems();
+}
+async function loadItems(){
+ dashmessage.textContent='Loading submissions…';
+ const{data,error}=await db.from('community_submissions').select('*').order('created_at',{ascending:false});
+ if(error){dashmessage.textContent='Could not load submissions: '+error.message;return}
+ $('#items').replaceChildren();
+ if(!data.length){dashmessage.textContent='No community submissions yet.';return}
+ dashmessage.textContent='';
+ for(const item of data){
+  const card=document.createElement('article'),title=document.createElement('h2'),desc=document.createElement('p'),meta=document.createElement('p'),actions=document.createElement('div');
+  title.textContent=item.place_name+' · '+item.category;desc.textContent=item.description;
+  meta.textContent=[item.address,item.maps_url,item.submitted_by,item.contact_email,'Status: '+item.status].filter(Boolean).join(' | ');
+  card.append(title,desc,meta);
+  if(item.status==='pending'){
+   for(const[label,status]of[['Approve','approved'],['Reject','rejected']]){
+    const b=document.createElement('button');b.textContent=label;if(status==='rejected')b.className='reject';
+    b.onclick=()=>moderate(item.id,status);actions.append(b)
+   }
+   card.append(actions)
+  }
+  $('#items').append(card)
+ }
+}
+async function moderate(id,status){
+ const{data:{user}}=await db.auth.getUser();
+ const{error}=await db.from('community_submissions').update({status,reviewed_at:new Date().toISOString(),reviewed_by:user.id}).eq('id',id);
+ if(error){dashmessage.textContent='Could not update submission: '+error.message;return}
+ await loadItems();
+}
+$('#emailform').addEventListener('submit',async e=>{
+ e.preventDefault();const email=$('#email').value.trim().toLowerCase(),button=$('#sendcode');
+ if(!email)return;button.disabled=true;message.textContent='Sending code…';
+ try{
+  const{error}=await db.auth.signInWithOtp({email,options:{shouldCreateUser:false}});
+  if(error){message.textContent='Could not send code: '+error.message;return}
+  pendingEmail=email;$('#verifyform').classList.remove('hidden');message.textContent='Code sent. Check your inbox and Spam, then enter the 6-digit code above.';
+ }catch(error){message.textContent='Sign-in request failed: '+(error?.message||'network error')}
+ finally{button.disabled=false}
+});
+$('#verifyform').addEventListener('submit',async e=>{
+ e.preventDefault();const token=$('#token').value.trim(),button=$('#verifycode');
+ if(!pendingEmail){message.textContent='Enter your email and request a new code first.';return}
+ button.disabled=true;message.textContent='Verifying code…';
+ try{
+  const{data,error}=await db.auth.verifyOtp({email:pendingEmail,token,type:'email'});
+  if(error){message.textContent='Code could not be verified: '+error.message;return}
+  if(!data.session){message.textContent='No session was created. Request a fresh code.';return}
+  await showDashboard(data.session);
+ }catch(error){message.textContent='Verification failed: '+(error?.message||'network error')}
+ finally{button.disabled=false}
+});
+$('#refresh').onclick=loadItems;
+$('#logout').onclick=async()=>{await db.auth.signOut();showLogin('You have signed out.');};
+db.auth.onAuthStateChange((event,session)=>{
+ if(['INITIAL_SESSION','SIGNED_IN','SIGNED_OUT','TOKEN_REFRESHED'].includes(event)){
+  setTimeout(()=>{showDashboard(session).catch(error=>{showLogin('Could not load admin panel: '+(error?.message||'unknown error'))})},0);
+ }
+});
+const{data:{session},error:sessionError}=await db.auth.getSession();
+if(sessionError)showLogin('Session check failed: '+sessionError.message);else await showDashboard(session);
 </script></body></html>
