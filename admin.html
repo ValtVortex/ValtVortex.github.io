@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><title>Admin moderation · ValtVortex</title><style>
 :root{color-scheme:light dark;--bg:#0b1016;--panel:#131d28;--line:#2b3b4b;--text:#eef4f8;--muted:#a5b3c0;--cyan:#69dce5;--orange:#ff9d52}@media(prefers-color-scheme:light){:root{--bg:#f5f7fa;--panel:#fff;--line:#d5dee7;--text:#182432;--muted:#526273;--cyan:#087f8c;--orange:#a94f0a}}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 system-ui,sans-serif}main{width:min(1000px,100% - 32px);margin:40px auto}a{color:var(--cyan)}.panel,article{padding:20px;border:1px solid var(--line);border-radius:16px;background:var(--panel);margin:14px 0}input{display:block;padding:12px;border:1px solid var(--line);border-radius:9px;background:var(--bg);color:var(--text);font:inherit;width:min(100%,360px);margin:8px 0 14px}label{display:block;font-weight:700}button{padding:9px 14px;margin:5px 5px 5px 0;border:0;border-radius:8px;background:var(--orange);color:#241707;font:inherit;font-weight:750;cursor:pointer}.reject{background:#b84b4b;color:white}.muted{color:var(--muted)}.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.hidden{display:none!important}#message{min-height:1.5em;color:var(--cyan)}
-</style></head><body><main><a href="community.html">← Community places</a><h1>Community moderation</h1><section class="panel" id="login"><h2>Administrator sign-in</h2><p>Enter your administrator email. We will send a one-time 6-digit code.</p><form id="emailform"><label for="email">Admin email</label><input id="email" type="email" autocomplete="email" placeholder="Admin email" required><button id="sendcode" type="submit">Send sign-in code</button></form><form id="verifyform" class="hidden"><label for="token">6-digit email code</label><input id="token" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" placeholder="123456" required><button id="verifycode" type="submit">Verify code &amp; sign in</button></form><p id="message" role="status" aria-live="polite"></p></section><section id="dashboard" class="hidden"><div class="row"><strong id="who"></strong><button id="refresh">Refresh</button><button id="logout">Sign out</button></div><p id="dashmessage" class="muted" role="status"></p><div id="items"></div></section></main>
+</style></head><body><main><a href="community.html">← Community places</a><h1>Community moderation</h1><section class="panel" id="login"><h2>Administrator sign-in</h2><p>Enter your administrator email. We will send a one-time 6-digit code.</p><form id="emailform"><label for="email">Admin email</label><input id="email" type="email" autocomplete="email" placeholder="Admin email" required><button id="sendcode" type="submit">Send sign-in code</button></form><form id="verifyform" class="hidden"><label for="token">6-digit email code</label><input id="token" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" placeholder="123456" required><button id="verifycode" type="submit">Verify code &amp; sign in</button></form><p id="message" role="status" aria-live="polite"></p></section><section id="dashboard" class="hidden"><div class="row"><strong id="who"></strong><button id="refresh">Refresh</button><button id="logout">Sign out</button></div><p id="dashmessage" class="muted" role="status"></p><h2>Place submissions</h2><div id="items"></div><h2>Private feedback inbox</h2><div id="feedback-items"></div></section></main>
 <script type="module">
 import{createClient}from'https://esm.sh/@supabase/supabase-js@2.57.0';
 const db=createClient('https://gtortwrmnxyphzceloub.supabase.co','sb_publishable_r5aoJXeWqysL3Ghkziw-6g_8Ds-vVsq'),$=s=>document.querySelector(s);
@@ -17,12 +17,12 @@ async function showDashboard(session){
 }
 async function loadItems(){
  dashmessage.textContent='Loading submissions…';
- const{data,error}=await db.from('community_submissions').select('*').order('created_at',{ascending:false});
- if(error){dashmessage.textContent='Could not load submissions: '+error.message;return}
+ const[{data,error},{data:feedback, error:feedbackError}]=await Promise.all([db.from('community_submissions').select('*').order('created_at',{ascending:false}),db.from('community_feedback').select('*').order('created_at',{ascending:false})]);
+ if(error){dashmessage.textContent='Could not load place submissions: '+error.message;return}
  $('#items').replaceChildren();
- if(!data.length){dashmessage.textContent='No community submissions yet.';return}
- dashmessage.textContent='';
- for(const item of data){
+ if(!data.length){$('#items').textContent='No community submissions yet.';} 
+ dashmessage.textContent=feedbackError?'Place submissions loaded, but feedback could not be loaded: '+feedbackError.message:'';
+ for(const item of (data||[])){
   const card=document.createElement('article'),title=document.createElement('h2'),desc=document.createElement('p'),meta=document.createElement('p'),actions=document.createElement('div');
   title.textContent=item.place_name+' · '+item.category;desc.textContent=item.description;
   meta.textContent=[item.address,item.maps_url,item.submitted_by,item.contact_email,'Status: '+item.status].filter(Boolean).join(' | ');
@@ -36,6 +36,27 @@ async function loadItems(){
   }
   $('#items').append(card)
  }
+ const inbox=$('#feedback-items');inbox.replaceChildren();
+ if(feedbackError){inbox.textContent='Feedback inbox unavailable: '+feedbackError.message;}
+ else if(!feedback?.length){inbox.textContent='No feedback received yet.';}
+ else for(const item of feedback){
+  const card=document.createElement('article'),title=document.createElement('h2'),desc=document.createElement('p'),meta=document.createElement('p'),actions=document.createElement('div');
+  title.textContent=item.subject+' · '+({suggestion:'Suggestion',correction:'Correction',bug_report:'Bug report',general:'General'}[item.feedback_type]||item.feedback_type);
+  desc.textContent=item.message;
+  meta.textContent=[item.submitted_by,item.contact_email,item.page_url,'Status: '+item.status,new Date(item.created_at).toLocaleString()].filter(Boolean).join(' | ');
+  card.append(title,desc,meta);
+  for(const [label,status] of [['Mark reviewing','reviewing'],['Mark resolved','resolved'],['Close','closed']]){
+   const b=document.createElement('button');b.textContent=label;b.onclick=()=>moderateFeedback(item.id,status);actions.append(b);
+  }
+  card.append(actions);inbox.append(card);
+ }
+
+}
+async function moderateFeedback(id,status){
+ const{data:{user}}=await db.auth.getUser();
+ const{error}=await db.from('community_feedback').update({status,reviewed_at:new Date().toISOString(),reviewed_by:user.id}).eq('id',id);
+ if(error){dashmessage.textContent='Could not update feedback: '+error.message;return}
+ await loadItems();
 }
 async function moderate(id,status){
  const{data:{user}}=await db.auth.getUser();
