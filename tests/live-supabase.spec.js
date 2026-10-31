@@ -26,6 +26,18 @@ test('live Supabase guest API exposes approved places only', async ({ request })
   expect(pendingResponse.status()).toBe(200);
   expect(await pendingResponse.json()).toEqual([]);
 
+  const privateContactResponse = await request.get(
+    `${projectUrl}/rest/v1/community_submissions?select=id,contact_email&limit=1`,
+    { headers }
+  );
+  expect([401, 403]).toContain(privateContactResponse.status());
+
+  const adminOnlyResponse = await request.post(
+    `${projectUrl}/rest/v1/rpc/admin_list_community_submissions`,
+    { headers, data: {} }
+  );
+  expect([401, 403]).toContain(adminOnlyResponse.status());
+
   const privateFeedbackResponse = await request.get(
     `${projectUrl}/rest/v1/community_feedback?select=id&limit=1`,
     { headers }
