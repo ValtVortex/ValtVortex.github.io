@@ -64,7 +64,7 @@ async function loadItems(){
 async function deletePlace(id,name){
  if(!confirm('Permanently remove "'+name+'" from the community? This cannot be undone.'))return;
  dashmessage.textContent='Removing place…';
- const{error}=await db.from('community_submissions').delete().eq('id',id);
+ const{error}=await db.rpc('admin_delete_community_submission',{p_submission_id:id});
  if(error){dashmessage.textContent='Could not remove place: '+error.message;return}
  dashmessage.textContent='Place removed from the public directory.';await loadItems();
 }
@@ -82,8 +82,7 @@ async function moderateFeedback(id,status){
  await loadItems();
 }
 async function moderate(id,status){
- const{data:{user}}=await db.auth.getUser();
- const{error}=await db.from('community_submissions').update({status,reviewed_at:new Date().toISOString(),reviewed_by:user.id}).eq('id',id);
+ const{error}=await db.rpc('admin_moderate_community_submission',{p_submission_id:id,p_status:status});
  if(error){dashmessage.textContent='Could not update submission: '+error.message;return}
  await loadItems();
 }
