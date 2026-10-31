@@ -3,8 +3,29 @@
 <style>
 :root{color-scheme:light dark;--bg:#0b1016;--panel:#131d28;--line:#2b3b4b;--text:#eef4f8;--muted:#a5b3c0;--cyan:#69dce5;--orange:#ff9d52}
 @media(prefers-color-scheme:light){:root{--bg:#f5f7fa;--panel:#fff;--line:#d5dee7;--text:#182432;--muted:#526273;--cyan:#087f8c;--orange:#a94f0a}}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 system-ui,sans-serif}main{width:min(1050px,100% - 32px);margin:42px auto}.back,a{color:var(--cyan)}h1{font-size:clamp(2.1rem,7vw,3.6rem);line-height:1.08;letter-spacing:-.05em}.hero{max-width:700px;margin-bottom:30px}p{color:var(--muted)}.panel,article{padding:clamp(18px,4vw,28px);border:1px solid var(--line);border-radius:18px;background:var(--panel)}.layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,.85fr);gap:20px;align-items:start}@media(max-width:760px){.layout{grid-template-columns:1fr}}label{display:block;margin:14px 0 5px;font-weight:700}input,textarea,select{width:100%;padding:12px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--text);font:inherit}textarea{min-height:105px}button{margin-top:18px;padding:12px 18px;border:0;border-radius:10px;background:var(--orange);color:#241707;font:inherit;font-weight:800;cursor:pointer}.status{min-height:1.5em;color:var(--cyan)}.small{font-size:.85rem}.places{display:grid;gap:12px}.place{padding:16px;border:1px solid var(--line);border-radius:12px}.place h3{margin:0}.tag{font-size:.8rem;color:var(--cyan)}.empty{border:1px dashed var(--line);border-radius:12px;padding:20px;color:var(--muted)}
-</style></head><body><main><a href="index.html">← ValtVortex home</a><header class="hero"><p>COMMUNITY DISCOVERIES</p><h1>Good places are better when shared.</h1><p>Explore places recommended by the community, or submit a discovery of your own. No account is needed to contribute.</p></header><div class="layout"><section class="panel"><h2>Share a place</h2><form id="form" novalidate>
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 system-ui,sans-serif}main{width:min(1050px,100% - 32px);margin:42px auto}.back,a{color:var(--cyan)}h1{font-size:clamp(2.1rem,7vw,3.6rem);line-height:1.08;letter-spacing:-.05em}.hero{max-width:700px;margin-bottom:30px}p{color:var(--muted)}.panel,article{padding:clamp(18px,4vw,28px);border:1px solid var(--line);border-radius:18px;background:var(--panel)}.layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,.85fr);gap:20px;align-items:start}@media(max-width:760px){.layout{grid-template-columns:1fr}}label{display:block;margin:14px 0 5px;font-weight:700}input,textarea,select{width:100%;padding:12px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--text);font:inherit}textarea{min-height:105px}button{margin-top:18px;padding:12px 18px;border:0;border-radius:10px;background:var(--orange);color:#241707;font:inherit;font-weight:800;cursor:pointer}.status{min-height:1.5em;color:var(--cyan)}.small{font-size:.85rem}.account-actions{display:flex;flex-wrap:wrap;gap:8px}.account-actions button{margin-top:10px}.places{display:grid;gap:12px}.place{padding:16px;border:1px solid var(--line);border-radius:12px}.place h3{margin:0}.tag{font-size:.8rem;color:var(--cyan)}.empty{border:1px dashed var(--line);border-radius:12px;padding:20px;color:var(--muted)}
+</style></head><body><main><a href="index.html">← ValtVortex home</a><header class="hero"><p>COMMUNITY DISCOVERIES</p><h1>Good places are better when shared.</h1><p>Explore places recommended by the community, or submit a discovery of your own. No account is needed to contribute.</p></header>
+<section class="panel" id="account-panel" style="margin-bottom:20px">
+<h2>Optional visitor account</h2>
+<p>Sign in with an email code to see the status of place suggestions you submitted using that email. Browsing and guest submissions remain available without an account.</p>
+<form id="account-email-form" novalidate>
+<label for="account-name">Display name (optional)</label><input id="account-name" maxlength="80" autocomplete="name">
+<label for="account-email">Email address *</label><input id="account-email" type="email" maxlength="254" autocomplete="email" required>
+<button id="account-send" type="submit">Send sign-in code</button>
+</form>
+<form id="account-verify-form" class="hidden" novalidate>
+<label for="account-token">6-digit email code *</label><input id="account-token" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required>
+<button id="account-verify" type="submit">Verify code</button>
+</form>
+<div id="account-session" class="hidden">
+<p id="account-welcome" role="status"></p>
+<div class="account-actions"><button id="account-logout" type="button">Sign out</button></div>
+<h3>Your place suggestions</h3><div id="my-submissions" class="places"><div class="empty">Loading your submissions…</div></div>
+</div>
+<p class="status" id="account-status" role="status" aria-live="polite"></p>
+<p class="small">Your email is used to link your own submissions to this account. It is not shown publicly. Admin approval is still required before a place appears in the directory.</p>
+</section>
+<div class="layout"><section class="panel"><h2>Share a place</h2><form id="form" novalidate>
 <label for="name">Place name *</label><input id="name" maxlength="120" required>
 <label for="category">Category *</label><select id="category" required><option value="">Choose a category</option><option>Shop</option><option>Restaurant or café</option><option>Landmark or attraction</option><option>Service</option><option>Business</option><option>Other</option></select>
 <label for="description">Why is it worth sharing? *</label><textarea id="description" minlength="10" maxlength="3000" required></textarea>
@@ -26,6 +47,28 @@
 import{createClient}from'https://esm.sh/@supabase/supabase-js@2.57.0';
 const db=createClient('https://gtortwrmnxyphzceloub.supabase.co','sb_publishable_r5aoJXeWqysL3Ghkziw-6g_8Ds-vVsq');
 const $=s=>document.querySelector(s),val=id=>$('#'+id).value.trim();
+let accountEmail='';
+let visitorSession=null;
+function showAccountStatus(message){$('#account-status').textContent=message;}
+async function loadMySubmissions(user){
+ const root=$('#my-submissions');root.replaceChildren();
+ if(!user?.email){root.textContent='Sign in with a verified email to see submissions linked to your account.';return;}
+ const{data,error}=await db.from('community_submissions').select('id,place_name,category,status,created_at').eq('contact_email',user.email).order('created_at',{ascending:false}).limit(50);
+ if(error){root.textContent='Could not load your submissions: '+error.message;return;}
+ if(!data?.length){root.textContent='No submissions are linked to this email yet. When you submit a place while signed in, your email is filled in automatically.';return;}
+ for(const item of data){const card=document.createElement('article');card.className='place';const h=document.createElement('h3');h.textContent=item.place_name;const meta=document.createElement('p');meta.textContent=item.category+' · '+item.status+' · '+new Date(item.created_at).toLocaleDateString();card.append(h,meta);root.append(card);}
+}
+async function syncVisitorAccount(session){
+ visitorSession=session||null;const user=session?.user;
+ const emailForm=$('#account-email-form'),verifyForm=$('#account-verify-form'),sessionPanel=$('#account-session');
+ if(!user){emailForm.classList.remove('hidden');sessionPanel.classList.add('hidden');return;}
+ emailForm.classList.add('hidden');verifyForm.classList.add('hidden');sessionPanel.classList.remove('hidden');
+ $('#account-welcome').textContent='Signed in as '+user.email+'. Your account is optional; guest browsing and submissions still work.';
+ if(!val('email'))$('#email').value=user.email||'';
+ if(!val('by')&&user.user_metadata?.display_name)$('#by').value=user.user_metadata.display_name;
+ if(!val('fb-email'))$('#fb-email').value=user.email||'';
+ await loadMySubmissions(user);
+}
 async function load(){const{data,error}=await db.from('community_submissions').select('id,place_name,category,description,address,maps_url').eq('status','approved').order('created_at',{ascending:false}).limit(100);const root=$('#places');root.replaceChildren();if(error||!data?.length){const e=document.createElement('div');e.className='empty';e.textContent=error?'Places are temporarily unavailable.':'No approved places yet. Be the first to suggest one!';root.append(e);return}for(const p of data){const card=document.createElement('article');card.className='place';const tag=document.createElement('div');tag.className='tag';tag.textContent=p.category;const h=document.createElement('h3');h.textContent=p.place_name;const d=document.createElement('p');d.textContent=p.description;card.append(tag,h,d);if(p.address){const a=document.createElement('p');a.textContent=p.address;card.append(a)}if(p.maps_url){const a=document.createElement('a');a.href=p.maps_url;a.target='_blank';a.rel='noopener noreferrer';a.textContent='Open in Google Maps';card.append(a)}root.append(card)}}
 function validateForm(form,status){
  const fields=[...form.querySelectorAll('input,select,textarea')].filter(el=>el.willValidate);
@@ -68,5 +111,50 @@ $('#feedback-form').addEventListener('submit',async e=>{
  finally{clearTimeout(timeout);send.disabled=false}
 });
 
+// Optional passwordless visitor accounts. Creating an account never gates guest workflows.
+$('#account-email-form').addEventListener('submit',async e=>{
+ e.preventDefault();const form=e.currentTarget,button=$('#account-send');
+ if(button.disabled)return;
+ if(!validateForm(form,$('#account-status')))return;
+ const email=val('account-email').toLowerCase(),displayName=val('account-name');
+ button.disabled=true;showAccountStatus('Sending a secure sign-in code…');
+ try{
+  const options={shouldCreateUser:true};
+  if(displayName)options.data={display_name:displayName};
+  const{error}=await db.auth.signInWithOtp({email,options});
+  if(error){showAccountStatus('Could not send the code: '+error.message);return;}
+  accountEmail=email;$('#account-verify-form').classList.remove('hidden');
+  showAccountStatus('Code sent. Check your inbox and Spam, then enter the 6-digit code.');
+ }catch(error){showAccountStatus('Sign-in request failed: '+(error?.message||'network error'));}
+ finally{button.disabled=false;}
+});
+$('#account-verify-form').addEventListener('submit',async e=>{
+ e.preventDefault();const button=$('#account-verify');
+ if(button.disabled)return;
+ if(!validateForm(e.currentTarget,$('#account-status')))return;
+ if(!accountEmail){showAccountStatus('Request a new code first.');return;}
+ button.disabled=true;showAccountStatus('Verifying your email code…');
+ try{
+  const{data,error}=await db.auth.verifyOtp({email:accountEmail,token:val('account-token'),type:'email'});
+  if(error){showAccountStatus('Code verification failed: '+error.message);return;}
+  if(!data.session){showAccountStatus('No account session was created. Please request a fresh code.');return;}
+  $('#account-token').value='';showAccountStatus('You are signed in.');
+  await syncVisitorAccount(data.session);
+ }catch(error){showAccountStatus('Verification failed: '+(error?.message||'network error'));}
+ finally{button.disabled=false;}
+});
+$('#account-logout').addEventListener('click',async()=>{
+ const{error}=await db.auth.signOut();
+ if(error){showAccountStatus('Could not sign out: '+error.message);return;}
+ accountEmail='';showAccountStatus('You have signed out. Guest contributions are still available.');
+});
+db.auth.onAuthStateChange((event,session)=>{
+ if(['INITIAL_SESSION','SIGNED_IN','SIGNED_OUT','TOKEN_REFRESHED','USER_UPDATED'].includes(event)){
+  setTimeout(()=>syncVisitorAccount(session).catch(error=>showAccountStatus('Account panel could not load: '+(error?.message||'unknown error'))),0);
+ }
+});
+const{data:{session:visitorInitialSession},error:visitorSessionError}=await db.auth.getSession();
+if(visitorSessionError)showAccountStatus('Account session check failed: '+visitorSessionError.message);
+else await syncVisitorAccount(visitorInitialSession);
 load();
 </script></body></html>
