@@ -7,7 +7,7 @@
 </style></head><body><main><a href="index.html">← ValtVortex home</a><header class="hero"><p>COMMUNITY DISCOVERIES</p><h1>Good places are better when shared.</h1><p>Explore places recommended by the community, or submit a discovery of your own. No account is needed to contribute.</p></header>
 <section class="panel" id="account-panel" style="margin-bottom:20px">
 <h2>Optional visitor account</h2>
-<p>Sign in with an email code to see the status of place suggestions you submitted using that email. Browsing and guest submissions remain available without an account.</p>
+<p>Sign in with an email code to see the status of place suggestions you submit while signed in. Browsing and guest submissions remain available without an account.</p>
 <form id="account-email-form" novalidate>
 <label for="account-name">Display name (optional)</label><input id="account-name" maxlength="80" autocomplete="name">
 <label for="account-email">Email address *</label><input id="account-email" type="email" maxlength="254" autocomplete="email" required>
@@ -53,7 +53,7 @@ function showAccountStatus(message){$('#account-status').textContent=message;}
 async function loadMySubmissions(user){
  const root=$('#my-submissions');root.replaceChildren();
  if(!user?.email){root.textContent='Sign in with a verified email to see submissions linked to your account.';return;}
- const{data,error}=await db.from('community_submissions').select('id,place_name,category,status,created_at').eq('contact_email',user.email).order('created_at',{ascending:false}).limit(50);
+ const{data,error}=await db.rpc('my_community_submissions');
  if(error){root.textContent='Could not load your submissions: '+error.message;return;}
  if(!data?.length){root.textContent='No submissions are linked to this email yet. When you submit a place while signed in, your email is filled in automatically.';return;}
  for(const item of data){const card=document.createElement('article');card.className='place';const h=document.createElement('h3');h.textContent=item.place_name;const meta=document.createElement('p');meta.textContent=item.category+' · '+item.status+' · '+new Date(item.created_at).toLocaleDateString();card.append(h,meta);root.append(card);}
