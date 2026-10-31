@@ -4,7 +4,7 @@
 :root{color-scheme:light dark;--bg:#0b1016;--panel:#131d28;--line:#2b3b4b;--text:#eef4f8;--muted:#a5b3c0;--cyan:#69dce5;--orange:#ff9d52}
 @media(prefers-color-scheme:light){:root{--bg:#f5f7fa;--panel:#fff;--line:#d5dee7;--text:#182432;--muted:#526273;--cyan:#087f8c;--orange:#a94f0a}}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 system-ui,sans-serif}main{width:min(1050px,100% - 32px);margin:42px auto}.back,a{color:var(--cyan)}h1{font-size:clamp(2.1rem,7vw,3.6rem);line-height:1.08;letter-spacing:-.05em}.hero{max-width:700px;margin-bottom:30px}p{color:var(--muted)}.panel,article{padding:clamp(18px,4vw,28px);border:1px solid var(--line);border-radius:18px;background:var(--panel)}.layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,.85fr);gap:20px;align-items:start}@media(max-width:760px){.layout{grid-template-columns:1fr}}label{display:block;margin:14px 0 5px;font-weight:700}input,textarea,select{width:100%;padding:12px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--text);font:inherit}textarea{min-height:105px}button{margin-top:18px;padding:12px 18px;border:0;border-radius:10px;background:var(--orange);color:#241707;font:inherit;font-weight:800;cursor:pointer}.status{min-height:1.5em;color:var(--cyan)}.small{font-size:.85rem}.places{display:grid;gap:12px}.place{padding:16px;border:1px solid var(--line);border-radius:12px}.place h3{margin:0}.tag{font-size:.8rem;color:var(--cyan)}.empty{border:1px dashed var(--line);border-radius:12px;padding:20px;color:var(--muted)}
-</style></head><body><main><a href="index.html">← ValtVortex home</a><header class="hero"><p>COMMUNITY DISCOVERIES</p><h1>Good places are better when shared.</h1><p>Explore places recommended by the community, or submit a discovery of your own. No account is needed to contribute.</p></header><div class="layout"><section class="panel"><h2>Share a place</h2><form id="form">
+</style></head><body><main><a href="index.html">← ValtVortex home</a><header class="hero"><p>COMMUNITY DISCOVERIES</p><h1>Good places are better when shared.</h1><p>Explore places recommended by the community, or submit a discovery of your own. No account is needed to contribute.</p></header><div class="layout"><section class="panel"><h2>Share a place</h2><form id="form" novalidate>
 <label for="name">Place name *</label><input id="name" maxlength="120" required>
 <label for="category">Category *</label><select id="category" required><option value="">Choose a category</option><option>Shop</option><option>Restaurant or café</option><option>Landmark or attraction</option><option>Service</option><option>Business</option><option>Other</option></select>
 <label for="description">Why is it worth sharing? *</label><textarea id="description" minlength="10" maxlength="3000" required></textarea>
@@ -13,7 +13,7 @@
 <label for="by">Your name (optional)</label><input id="by" maxlength="80">
 <label for="email">Contact email (optional)</label><input id="email" type="email" maxlength="254">
 <div hidden aria-hidden="true"><input id="company_site" name="company_site" tabindex="-1" autocomplete="new-password"></div>
-<button id="send" type="submit">Submit for review</button><p class="status" id="status" role="status" aria-live="polite"></p><p class="small">Every suggestion is reviewed before publication. Do not share private information or content you do not have permission to submit.</p></form></section><section class="panel"><h2>Community places</h2><p>Only approved submissions appear here.</p><div class="places" id="places"><div class="empty">Loading approved places…</div></div></section></div><section class="panel" style="margin-top:20px"><h2>Send feedback</h2><p>Suggestions, corrections and bug reports go straight to the ValtVortex admin inbox. No account required.</p><form id="feedback-form">
+<button id="send" type="submit">Submit for review</button><p class="status" id="status" role="status" aria-live="polite"></p><p class="small">Every suggestion is reviewed before publication. Do not share private information or content you do not have permission to submit.</p></form></section><section class="panel"><h2>Community places</h2><p>Only approved submissions appear here.</p><div class="places" id="places"><div class="empty">Loading approved places…</div></div></section></div><section class="panel" style="margin-top:20px"><h2>Send feedback</h2><p>Suggestions, corrections and bug reports go straight to the ValtVortex admin inbox. No account required.</p><form id="feedback-form" novalidate>
 <label for="fb-type">What is this about? *</label><select id="fb-type" required><option value="suggestion">Suggestion</option><option value="correction">Correction</option><option value="bug_report">Report a bug</option><option value="general">General feedback</option></select>
 <label for="fb-subject">Subject *</label><input id="fb-subject" maxlength="140" minlength="3" required>
 <label for="fb-message">Details *</label><textarea id="fb-message" maxlength="4000" minlength="10" required></textarea>
@@ -27,16 +27,44 @@ import{createClient}from'https://esm.sh/@supabase/supabase-js@2.57.0';
 const db=createClient('https://gtortwrmnxyphzceloub.supabase.co','sb_publishable_r5aoJXeWqysL3Ghkziw-6g_8Ds-vVsq');
 const $=s=>document.querySelector(s),val=id=>$('#'+id).value.trim();
 async function load(){const{data,error}=await db.from('community_submissions').select('id,place_name,category,description,address,maps_url').eq('status','approved').order('created_at',{ascending:false}).limit(100);const root=$('#places');root.replaceChildren();if(error||!data?.length){const e=document.createElement('div');e.className='empty';e.textContent=error?'Places are temporarily unavailable.':'No approved places yet. Be the first to suggest one!';root.append(e);return}for(const p of data){const card=document.createElement('article');card.className='place';const tag=document.createElement('div');tag.className='tag';tag.textContent=p.category;const h=document.createElement('h3');h.textContent=p.place_name;const d=document.createElement('p');d.textContent=p.description;card.append(tag,h,d);if(p.address){const a=document.createElement('p');a.textContent=p.address;card.append(a)}if(p.maps_url){const a=document.createElement('a');a.href=p.maps_url;a.target='_blank';a.rel='noopener noreferrer';a.textContent='Open in Google Maps';card.append(a)}root.append(card)}}
-$('#form').addEventListener('submit',async e=>{e.preventDefault();const send=$('#send'),status=$('#status');if(val('company_site')){status.textContent='Submission blocked by spam protection. Please reload the page and try again.';return;}if(!e.target.reportValidity())return;send.disabled=true;status.textContent='Connecting…';const row={place_name:val('name'),category:val('category'),description:val('description'),address:val('address')||null,maps_url:val('maps')||null,submitted_by:val('by')||null,contact_email:val('email')||null,status:'pending'};const controller=new AbortController();const timeout=setTimeout(()=>controller.abort(),20000);try{status.textContent='Submitting your place for review…';const{error}=await db.from('community_submissions').insert(row).abortSignal(controller.signal);if(error){const detail=[error.message,error.details,error.hint,error.code].filter(Boolean).join(' · ');status.textContent='Submission failed: '+detail;console.error('Community submission failed:',error);return}e.target.reset();status.textContent='Submitted successfully! Your place is pending admin approval.'}catch(error){console.error('Community submission request failed:',error);status.textContent=error?.name==='AbortError'?'The request timed out. Check your connection and try once more.':'Could not reach the submission service: '+(error?.message||'network error')}finally{clearTimeout(timeout);send.disabled=false}});
+function validateForm(form,status){
+ const fields=[...form.querySelectorAll('input,select,textarea')].filter(el=>el.willValidate);
+ for(const field of fields)field.setCustomValidity('');
+ if(!form.checkValidity()){
+  const first=fields.find(field=>!field.validity.valid);
+  status.textContent='Please complete the required fields marked with * and check any highlighted information.';
+  form.reportValidity();
+  first?.focus();
+  return false;
+ }
+ return true;
+}
+$('#form').addEventListener('submit',async e=>{
+ e.preventDefault();const send=$('#send'),status=$('#status'),form=e.currentTarget;
+ if(send.disabled)return;
+ if(val('company_site')){status.textContent='Submission blocked by spam protection. Please reload the page and try again.';return;}
+ if(!validateForm(form,status))return;
+ send.disabled=true;status.textContent='Connecting…';
+ const row={place_name:val('name'),category:val('category'),description:val('description'),address:val('address')||null,maps_url:val('maps')||null,submitted_by:val('by')||null,contact_email:val('email')||null,status:'pending'};
+ const controller=new AbortController();const timeout=setTimeout(()=>controller.abort(),20000);
+ try{status.textContent='Submitting your place for review…';const{error}=await db.from('community_submissions').insert(row).abortSignal(controller.signal);
+  if(error){status.textContent='Submission failed: '+[error.message,error.details,error.hint,error.code].filter(Boolean).join(' · ');console.error('Community submission failed:',error);return}
+  form.reset();status.textContent='Submitted successfully! Your place is pending admin approval.';
+ }catch(error){console.error('Community submission request failed:',error);status.textContent=error?.name==='AbortError'?'The request timed out. Check your connection and try once more.':'Could not reach the submission service: '+(error?.message||'network error')}
+ finally{clearTimeout(timeout);send.disabled=false}
+});
 $('#feedback-form').addEventListener('submit',async e=>{
- e.preventDefault();if(val('fb-website'))return;
- const send=$('#fb-send'),status=$('#fb-status');send.disabled=true;status.textContent='Sending…';
+ e.preventDefault();const form=e.currentTarget,send=$('#fb-send'),status=$('#fb-status');
+ if(send.disabled)return;
+ if(val('fb-website')){status.textContent='Feedback blocked by spam protection. Please reload the page and try again.';return;}
+ if(!validateForm(form,status))return;
+ send.disabled=true;status.textContent='Sending…';
  const row={feedback_type:val('fb-type'),subject:val('fb-subject'),message:val('fb-message'),page_url:location.href,submitted_by:val('fb-name')||null,contact_email:val('fb-email')||null,status:'new'};
  const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),20000);
  try{const{error}=await db.from('community_feedback').insert(row).abortSignal(controller.signal);
-  if(error){status.textContent='Could not send feedback: '+[error.message,error.details,error.code].filter(Boolean).join(' · ');return}
-  e.target.reset();status.textContent='Thank you. Your feedback has been sent privately to the ValtVortex admin inbox.';
- }catch(error){status.textContent=error?.name==='AbortError'?'The request timed out. Please try again.':'Could not reach the feedback service: '+(error?.message||'network error')}
+  if(error){status.textContent='Could not send feedback: '+[error.message,error.details,error.code].filter(Boolean).join(' · ');console.error('Feedback submission failed:',error);return}
+  form.reset();status.textContent='Thank you. Your feedback has been sent privately to the ValtVortex admin inbox.';
+ }catch(error){console.error('Feedback submission request failed:',error);status.textContent=error?.name==='AbortError'?'The request timed out. Please try again.':'Could not reach the feedback service: '+(error?.message||'network error')}
  finally{clearTimeout(timeout);send.disabled=false}
 });
 
