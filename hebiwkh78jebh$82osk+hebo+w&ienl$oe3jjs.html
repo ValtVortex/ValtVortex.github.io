@@ -1,0 +1,961 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b1016" id="theme-color-meta">
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" content="ValtVortex — a curated directory of personal resources, project references, useful places, media, and security information.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="ValtVortex — Resource Directory">
+  <meta property="og:description" content="A central directory for personal resources, project references, useful places, media and security information.">
+  <meta property="og:image" content="og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="ValtVortex — a personal resource and discovery directory.">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="ValtVortex — Resource Directory">
+  <meta name="twitter:description" content="A central directory for personal resources, project references, useful places, media and security information.">
+  <meta name="twitter:image" content="og-image.jpg">
+  <link rel="icon" type="image/png" href="favicon-light.png" media="(prefers-color-scheme: light)">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <title>ValtVortex — Private Resource Portal</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0a1017;
+      --bg-raised: #101923;
+      --surface: #121e29;
+      --surface-2: #192735;
+      --surface-3: #203242;
+      --line: #2b3d4e;
+      --line-soft: rgb(172 193 211 / 14%);
+      --text: #edf4f8;
+      --muted: #a7b6c3;
+      --subtle: #8294a4;
+      --orange: #ff9d52;
+      --cyan: #68dce5;
+      --warning: #ffd08a;
+      --success: #9bd9bf;
+      --danger: #ff9c9c;
+      --radius-sm: 10px;
+      --radius: 16px;
+      --radius-lg: 23px;
+      --content: 1160px;
+      --shadow: 0 18px 44px rgb(0 0 0 / 20%);
+      --focus: 0 0 0 2px var(--bg), 0 0 0 4px var(--orange);
+    }
+
+    :root[data-theme="light"] {
+      color-scheme: light;
+      --bg: #f4f7fa;
+      --bg-raised: #ffffff;
+      --surface: #ffffff;
+      --surface-2: #edf2f6;
+      --surface-3: #e5edf3;
+      --line: #d4dee7;
+      --line-soft: rgb(40 60 80 / 15%);
+      --text: #182432;
+      --muted: #526273;
+      --subtle: #68798a;
+      --orange: #a94f0a;
+      --cyan: #087987;
+      --warning: #835000;
+      --success: #176b4b;
+      --danger: #a32626;
+      --shadow: 0 12px 30px rgb(25 45 65 / 8%);
+      --focus: 0 0 0 2px var(--bg), 0 0 0 4px var(--orange);
+    }
+
+    @media (prefers-color-scheme: light) {
+      :root:not([data-theme="dark"]) {
+        color-scheme: light;
+        --bg: #f4f7fa;
+        --bg-raised: #ffffff;
+        --surface: #ffffff;
+        --surface-2: #edf2f6;
+        --surface-3: #e5edf3;
+        --line: #d4dee7;
+        --line-soft: rgb(40 60 80 / 15%);
+        --text: #182432;
+        --muted: #526273;
+        --subtle: #68798a;
+        --orange: #a94f0a;
+        --cyan: #087987;
+        --warning: #835000;
+        --success: #176b4b;
+        --danger: #a32626;
+        --shadow: 0 12px 30px rgb(25 45 65 / 8%);
+        --focus: 0 0 0 2px var(--bg), 0 0 0 4px var(--orange);
+      }
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { min-width: 320px; scroll-behavior: smooth; scroll-padding-top: 7.5rem; }
+    body {
+      min-width: 320px;
+      margin: 0;
+      color: var(--text);
+      background:
+        radial-gradient(ellipse at 8% -12%, rgb(255 157 82 / 10%), transparent 34rem),
+        radial-gradient(ellipse at 100% 3%, rgb(104 220 229 / 8%), transparent 31rem),
+        var(--bg);
+      font: 16px/1.65 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+    [hidden] { display: none !important; }
+    a { color: var(--cyan); text-decoration-thickness: .08em; text-underline-offset: .2em; }
+    a:hover { color: var(--text); }
+    button, input, select, textarea { font: inherit; }
+    button { color: inherit; }
+    :focus-visible { outline: none; box-shadow: var(--focus); border-radius: 7px; }
+    ::selection { color: var(--bg); background: var(--cyan); }
+
+    .skip-link {
+      position: absolute; z-index: 80; top: .75rem; left: .75rem;
+      padding: .7rem 1rem; transform: translateY(-180%);
+      border-radius: .7rem; background: var(--text); color: var(--bg);
+      font-weight: 800; text-decoration: none;
+    }
+    .skip-link:focus { transform: translateY(0); }
+    .site-header {
+      position: sticky; z-index: 30; top: 0;
+      border-bottom: 1px solid var(--line-soft);
+      background: color-mix(in srgb, var(--bg) 92%, transparent);
+      -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
+    }
+    .header-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: .75rem 1.25rem; width: min(100%, var(--content));
+      min-height: 72px; margin-inline: auto; padding: .65rem 1.25rem;
+    }
+    .brand { display: inline-flex; align-items: center; gap: .42rem; min-width: 0; color: var(--text); font-weight: 850; text-decoration: none; }
+    .brand-mark { flex: 0 0 auto; color: var(--orange); font-size: .88rem; white-space: nowrap; }
+    .brand-name { min-width: 0; font-size: clamp(.86rem, 2.3vw, 1.08rem); line-height: 1.25; overflow-wrap: anywhere; }
+    .header-tools { display: flex; align-items: center; justify-content: flex-end; gap: .65rem; min-width: 0; }
+    .header-nav { display: flex; align-items: center; gap: .12rem; min-width: 0; }
+    .header-nav a {
+      display: inline-flex; align-items: center; min-height: 42px; padding: .42rem .58rem;
+      border-radius: 9px; color: var(--muted); font-size: .82rem; font-weight: 700;
+      text-decoration: none; white-space: nowrap;
+    }
+    .header-nav a:hover { color: var(--text); background: var(--surface-2); }
+    .theme-select {
+      min-height: 40px; max-width: 112px; padding: .35rem .55rem;
+      border: 1px solid var(--line); border-radius: 9px;
+      background: var(--surface); color: var(--text); font-size: .78rem;
+    }
+    main { width: min(100%, var(--content)); margin-inline: auto; padding: 1.9rem 1.25rem 3.5rem; }
+    .hero { position: relative; padding: clamp(1.5rem, 5vw, 3.7rem) 0 1.2rem; }
+    .hero::after {
+      position: absolute; top: 1rem; right: clamp(.2rem, 5vw, 4rem);
+      width: clamp(5rem, 15vw, 10rem); aspect-ratio: 1;
+      border: 1px solid rgb(104 220 229 / 16%); border-radius: 50%;
+      background: radial-gradient(circle, rgb(104 220 229 / 8%), transparent 68%);
+      content: ""; pointer-events: none;
+    }
+    .eyebrow, .section-kicker {
+      display: inline-flex; align-items: center; gap: .55rem;
+      color: var(--orange); font-size: .7rem; font-weight: 850;
+      letter-spacing: .15em; text-transform: uppercase;
+    }
+    .eyebrow { margin: 0 0 .8rem; }
+    .eyebrow::before { width: 1.35rem; height: 1px; background: currentColor; content: ""; }
+    h1 { position: relative; z-index: 1; max-width: 900px; margin: 0; font-size: clamp(2rem, 7.5vw, 4.5rem); line-height: 1.07; letter-spacing: -.055em; overflow-wrap: anywhere; }
+    .hero-title .accent { color: var(--cyan); }
+    .hero-copy { max-width: 720px; margin: 1rem 0 0; color: var(--muted); font-size: clamp(1rem, 2.2vw, 1.12rem); }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: .65rem; margin-top: 1.2rem; }
+    .button-link, .button {
+      display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+      min-height: 44px; padding: .62rem .95rem; border: 1px solid var(--line);
+      border-radius: 11px; background: var(--surface-2); color: var(--text);
+      font-size: .88rem; font-weight: 750; text-decoration: none; cursor: pointer;
+    }
+    .button.primary, .button-link.primary { border-color: color-mix(in srgb, var(--orange) 58%, var(--line)); background: color-mix(in srgb, var(--orange) 12%, var(--surface)); }
+    .button:hover, .button-link:hover { border-color: var(--cyan); color: var(--text); }
+    .notice {
+      display: flex; align-items: flex-start; gap: .8rem; margin-top: 1.5rem;
+      padding: 1rem 1.1rem; border: 1px solid color-mix(in srgb, var(--cyan) 23%, var(--line));
+      border-radius: 14px; background: color-mix(in srgb, var(--cyan) 6%, var(--surface));
+    }
+    .notice-icon { flex: 0 0 auto; color: var(--cyan); font-size: 1.1rem; }
+    .notice p { margin: 0; color: var(--muted); font-size: .91rem; }
+    .notice strong { color: var(--text); }
+    .directory-search {
+      display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end;
+      gap: .55rem 1rem; max-width: 760px; margin: 1.35rem 0 2.4rem;
+      padding: 1rem; border: 1px solid var(--line); border-radius: var(--radius);
+      background: var(--bg-raised);
+    }
+    .directory-search label { grid-column: 1 / -1; color: var(--text); font-size: .88rem; font-weight: 780; }
+    .directory-search input, .field input, .field select, .field textarea {
+      width: 100%; min-width: 0; min-height: 46px; padding: .7rem .85rem;
+      border: 1px solid var(--line); border-radius: 10px; background: var(--bg);
+      color: var(--text); accent-color: var(--cyan);
+    }
+    .directory-search input::placeholder, .field input::placeholder, .field textarea::placeholder { color: var(--subtle); opacity: 1; }
+    .search-hint, .search-status { margin: 0; color: var(--muted); font-size: .8rem; }
+    .search-hint { white-space: nowrap; }
+    .search-status { grid-column: 1 / -1; }
+    .no-results, .empty-state {
+      margin: 0 0 1.5rem; padding: 1rem 1.15rem; border: 1px dashed var(--line);
+      border-radius: 13px; color: var(--muted); background: var(--bg-raised);
+    }
+    .directory-section { margin-top: 3rem; }
+    .section-heading { display: flex; align-items: end; justify-content: space-between; gap: 1rem; margin: 0 0 1rem; }
+    .section-kicker { display: block; margin-bottom: .32rem; font-size: .67rem; }
+    .section-heading h2 { margin: 0; font-size: clamp(1.35rem, 3.6vw, 1.85rem); line-height: 1.2; letter-spacing: -.035em; }
+    .section-heading p { margin: .38rem 0 0; color: var(--muted); font-size: .89rem; }
+    .resource-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+    .database-layout { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+    .card {
+      min-width: 0; padding: 1.05rem; overflow: hidden;
+      border: 1px solid var(--line); border-radius: var(--radius);
+      background: linear-gradient(145deg, color-mix(in srgb, var(--text) 2.5%, transparent), transparent 58%), var(--surface);
+      box-shadow: var(--shadow); transition: border-color .18s ease, transform .18s ease;
+    }
+    .card:hover { border-color: color-mix(in srgb, var(--cyan) 36%, var(--line)); }
+    .card-summary { display: block; min-height: 44px; cursor: pointer; list-style: none; }
+    .card-summary::-webkit-details-marker { display: none; }
+    .card-summary::marker { content: ""; }
+    .card-top { display: flex; align-items: center; gap: .75rem; min-width: 0; }
+    .provider-icon {
+      display: grid; place-items: center; flex: 0 0 2.65rem; width: 2.65rem; height: 2.65rem;
+      border: 1px solid var(--line); border-radius: 12px; background: var(--surface-2);
+      color: var(--orange); font-size: .82rem; font-weight: 850; letter-spacing: -.02em;
+    }
+    .card-title-wrap { display: block; min-width: 0; }
+    .card-title { display: block; margin: 0; color: var(--text); font-size: 1rem; font-weight: 780; line-height: 1.35; }
+    .card-subtitle { display: block; margin: .17rem 0 0; color: var(--muted); font-size: .81rem; line-height: 1.45; }
+    .card-chevron { flex: 0 0 auto; margin-left: auto; color: var(--subtle); font-size: 1rem; transition: transform .18s ease; }
+    details[open] > .card-summary .card-chevron { transform: rotate(180deg); }
+    .card-details { min-width: 0; margin-top: .9rem; }
+    .resource-list { display: grid; gap: .45rem; margin: 0; padding: 0; list-style: none; }
+    .resource-list a, .resource-list .unconfigured {
+      display: flex; align-items: center; justify-content: space-between; gap: .65rem;
+      min-height: 44px; padding: .62rem .72rem; border: 1px solid transparent;
+      border-radius: 10px; background: color-mix(in srgb, var(--text) 3%, transparent);
+      overflow-wrap: anywhere; text-decoration: none;
+    }
+    .resource-list a:hover { border-color: color-mix(in srgb, var(--cyan) 28%, var(--line)); background: color-mix(in srgb, var(--cyan) 7%, transparent); }
+    .external-mark { flex: 0 0 auto; color: var(--muted); font-size: .9rem; }
+    .unconfigured { align-items: flex-start !important; flex-direction: column; gap: .12rem !important; border-color: var(--line) !important; border-style: dashed !important; color: var(--muted); font-size: .87rem; }
+    .status { color: var(--warning); font-size: .66rem; font-weight: 850; letter-spacing: .07em; text-transform: uppercase; }
+    .fine-print { margin: .8rem 0 0; color: var(--muted) !important; font-size: .82rem; }
+    .info-disclosure { margin: .8rem 0 1rem; color: var(--muted); font-size: .88rem; }
+    .info-disclosure summary { display: inline-block; cursor: pointer; color: var(--muted); text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: .2em; }
+    .info-disclosure summary:hover { color: var(--text); }
+    .info-disclosure p { max-width: 940px; margin: .65rem 0 0; padding: .85rem .95rem; border: 1px solid var(--line-soft); border-radius: 11px; color: var(--muted); background: color-mix(in srgb, var(--text) 2%, transparent); }
+    .boxed-disclosure { margin-top: .2rem; }
+    .security-inline { margin: 1.3rem 0 0; }
+    .moodiary-link {
+      display: flex; align-items: center; justify-content: space-between; gap: .8rem;
+      min-height: 64px; padding: .85rem .95rem; border: 1px solid var(--line);
+      border-radius: 11px; background: color-mix(in srgb, var(--text) 2%, transparent); text-decoration: none;
+    }
+    .moodiary-link:hover { border-color: color-mix(in srgb, var(--cyan) 30%, var(--line)); }
+    .moodiary-link strong { display: block; color: var(--text); }
+    .moodiary-link small { display: block; color: var(--muted); }
+    .security-panel { margin-top: 1rem; overflow: clip; border: 1px solid var(--line); border-radius: var(--radius-lg); background: linear-gradient(145deg, color-mix(in srgb, var(--orange) 5%, transparent), transparent 54%), var(--surface); box-shadow: var(--shadow); }
+    .security-panel > summary { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 60px; padding: 1rem 1.2rem; cursor: pointer; color: var(--orange); font-weight: 820; list-style: none; }
+    .security-panel > summary::-webkit-details-marker { display: none; }
+    .security-panel > summary::after { content: "+"; color: var(--muted); font-size: 1.3rem; line-height: 1; }
+    .security-panel[open] > summary::after { content: "−"; }
+    .security-panel > summary:hover { background: color-mix(in srgb, var(--text) 2%, transparent); }
+    .security-content { padding: .15rem 1.2rem 1.25rem; border-top: 1px solid var(--line); }
+    .security-content p { color: var(--muted); }
+    .security-content h3 { margin: 1.3rem 0 .55rem; font-size: 1rem; }
+    .security-content .quote { color: var(--muted); text-align: right; font-style: italic; }
+    .download-list { display: grid; gap: .65rem; margin: 0; padding: 0; list-style: none; }
+    .download-list li { display: grid; gap: .4rem; padding: .85rem; border: 1px solid var(--line); border-radius: 11px; background: color-mix(in srgb, var(--text) 1.5%, transparent); }
+    .file-reference { display: grid; gap: .15rem; }
+    .file-reference code { color: var(--muted); font-size: .82rem; overflow-wrap: anywhere; }
+    .file-label { color: var(--muted); font-size: .9rem; }
+    .file-status { color: var(--warning); font-size: .72rem; font-weight: 850; letter-spacing: .05em; text-transform: uppercase; }
+    .version-note { margin: 1rem 0; padding: .85rem 1rem; border: 1px solid color-mix(in srgb, var(--warning) 25%, var(--line)); border-radius: 11px; background: color-mix(in srgb, var(--warning) 5%, transparent); color: var(--muted); font-size: .88rem; }
+
+    .discovery-toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .7rem; margin: 0 0 1rem; }
+    .discovery-toolbar p { margin: 0; color: var(--muted); font-size: .83rem; }
+    .discovery-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+    .discovery-card { min-width: 0; padding: 1rem; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); box-shadow: var(--shadow); }
+    .discovery-card h3 { margin: 0; font-size: 1.08rem; line-height: 1.3; overflow-wrap: anywhere; }
+    .discovery-type { display: inline-block; margin-bottom: .4rem; color: var(--orange); font-size: .68rem; font-weight: 850; letter-spacing: .1em; text-transform: uppercase; }
+    .discovery-meta { margin: .35rem 0; color: var(--muted); font-size: .84rem; overflow-wrap: anywhere; }
+    .discovery-review { margin: .7rem 0; color: var(--text); font-size: .91rem; white-space: pre-wrap; overflow-wrap: anywhere; }
+    .discovery-links { display: flex; flex-wrap: wrap; gap: .45rem; margin-top: .7rem; }
+    .discovery-links a { display: inline-flex; align-items: center; min-height: 38px; padding: .45rem .65rem; border: 1px solid var(--line); border-radius: 9px; color: var(--cyan); font-size: .82rem; font-weight: 700; text-decoration: none; }
+    .discovery-links a:hover { border-color: var(--cyan); }
+    .discovery-media { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .55rem; margin-top: .75rem; }
+    .discovery-media img { display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: cover; border-radius: 10px; border: 1px solid var(--line); background: var(--surface-2); }
+    .delete-entry { margin-top: .75rem; border: 0; padding: .4rem 0; background: transparent; color: var(--danger); font-size: .8rem; text-decoration: underline; text-underline-offset: .2em; cursor: pointer; }
+    .entry-form-panel { margin-top: 1.1rem; padding: 1rem; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg-raised); }
+    .entry-form-panel h3 { margin: 0 0 .3rem; font-size: 1.1rem; }
+    .entry-form-panel > p { margin: 0 0 1rem; color: var(--muted); font-size: .84rem; }
+    .entry-form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .85rem; }
+    .field { min-width: 0; display: grid; gap: .3rem; }
+    .field.full { grid-column: 1 / -1; }
+    .field label { color: var(--text); font-size: .82rem; font-weight: 720; }
+    .field small { color: var(--muted); font-size: .75rem; }
+    .field textarea { min-height: 92px; resize: vertical; }
+    .form-actions { display: flex; flex-wrap: wrap; align-items: center; gap: .65rem; grid-column: 1 / -1; }
+    .form-status { grid-column: 1 / -1; min-height: 1.4em; margin: 0; color: var(--muted); font-size: .82rem; }
+    .contact-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+    .contact-card { display: flex; flex-direction: column; align-items: flex-start; gap: .45rem; min-width: 0; padding: 1rem; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+    .contact-card strong { font-size: 1rem; }
+    .contact-card p { margin: 0; color: var(--muted); font-size: .84rem; }
+    .contact-card a { overflow-wrap: anywhere; }
+    .actions { display: flex; flex-direction: column; align-items: center; gap: .55rem; margin: 2.4rem 0 0; }
+    .back-button { min-height: 48px; padding: .7rem 1.2rem; border: 1px solid color-mix(in srgb, var(--orange) 45%, var(--line)); border-radius: 12px; background: var(--surface-2); color: var(--text); font-weight: 780; cursor: pointer; }
+    .back-button:hover { border-color: var(--orange); }
+    .back-status { min-height: 1.4em; margin: 0; color: var(--muted); font-size: .82rem; text-align: center; }
+    .site-footer { width: min(100%, var(--content)); margin-inline: auto; padding: 1.5rem 1.25rem 2.5rem; border-top: 1px solid var(--line-soft); color: var(--muted); text-align: center; font-size: .82rem; }
+    .site-footer p { margin: .45rem 0; }
+    .site-footer strong { color: var(--orange); }
+    .site-footer a { color: var(--muted); }
+    .sr-only { position: absolute !important; width: 1px !important; height: 1px !important; padding: 0 !important; margin: -1px !important; overflow: hidden !important; clip: rect(0, 0, 0, 0) !important; white-space: nowrap !important; border: 0 !important; }
+
+    @media (max-width: 980px) {
+      .header-inner { align-items: flex-start; flex-direction: column; gap: .35rem; padding-block: .6rem; }
+      .header-tools { width: 100%; justify-content: space-between; }
+      .header-nav { flex: 1 1 auto; overflow-x: auto; padding: .1rem 0 .25rem; scrollbar-width: thin; }
+      .resource-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 640px) {
+      html { scroll-padding-top: 8.8rem; }
+      .header-inner { padding-inline: 1rem; }
+      .header-tools { align-items: center; gap: .35rem; }
+      .header-nav { gap: .05rem; margin-inline: -.2rem; }
+      .header-nav a { min-height: 42px; padding: .4rem .5rem; font-size: .79rem; }
+      .theme-select { max-width: 102px; flex: 0 0 auto; }
+      main { padding: 1.1rem 1rem 2.6rem; }
+      .hero { padding-top: 1.45rem; }
+      .hero::after { top: 1rem; right: .15rem; opacity: .65; }
+      .directory-search { grid-template-columns: minmax(0, 1fr); padding: .9rem; margin-bottom: 2rem; }
+      .search-hint { white-space: normal; }
+      .resource-grid, .database-layout, .discovery-grid, .contact-grid { grid-template-columns: minmax(0, 1fr); }
+      .card { padding: .95rem; }
+      .section-heading { align-items: flex-start; flex-direction: column; }
+      .security-content { padding-inline: 1rem; }
+      .security-panel > summary { padding-inline: 1rem; }
+      .entry-form { grid-template-columns: minmax(0, 1fr); }
+      .field.full, .form-actions, .form-status { grid-column: 1; }
+      .site-footer { padding-inline: 1rem; }
+    }
+    @media (max-width: 360px) {
+      .brand-mark { font-size: .68rem; }
+      .brand-name { font-size: .81rem; }
+      .header-nav a { padding-inline: .42rem; font-size: .75rem; }
+      .theme-select { max-width: 88px; font-size: .74rem; }
+      .hero-actions .button-link { flex: 1 1 auto; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="#top" aria-label="ValtVortex home">
+        <span class="brand-mark" aria-hidden="true">╭─❖ ❮</span>
+        <span class="brand-name">𝓥𝖆𝖑𝓽𝓥𝖔𝖗𝖙𝖊𝖝</span>
+        <span class="brand-mark" aria-hidden="true">❯ ❖─╮</span>
+      </a>
+      <div class="header-tools">
+        <nav class="header-nav" aria-label="Main navigation">
+          <a href="#source-code">Resources</a>
+          <a href="#database">Database</a>
+          <a href="#recommendations">Curated</a>
+          <a href="#community-links">Community</a>
+          <a href="#discoveries">Places &amp; media</a>
+          <a href="#security">Security</a>
+          <a href="#contact">Contact</a>
+        </nav>
+        <label class="sr-only" for="theme-select">Color theme</label>
+        <select class="theme-select" id="theme-select" aria-label="Color theme">
+          <option value="system">System</option>
+          <option value="dark">Dark</option>
+          <option value="light">Light</option>
+        </select>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <section class="hero" id="top" aria-labelledby="page-title">
+      <p class="eyebrow">Personal resource directory</p>
+      <h1 id="page-title" class="hero-title">Welcome to <span class="accent">ValtVortex.</span></h1>
+      <p class="hero-copy">A central directory for personal resources, security files, project references, useful apps, places worth discovering, photos, clips, and reviews.</p>
+      <div class="hero-actions">
+        <a class="button-link primary" href="#source-code">Explore resources <span aria-hidden="true">↓</span></a>
+        <a class="button-link" href="#discoveries">Explore discoveries <span aria-hidden="true">↗</span></a>
+        <a class="button-link" href="https://www.youtube.com/@valtvortex" target="_blank" rel="noopener noreferrer">YouTube · @valtvortex <span aria-hidden="true">↗</span></a>
+      </div>
+      <div class="notice" role="note">
+        <span class="notice-icon" aria-hidden="true">◈</span>
+        <p><strong>Notice for visitors</strong><br>Links are provided for convenience, not as endorsements. Verify destinations, licensing, privacy terms, and downloads before use. Listings and reviews reflect the information supplied by the site owner; they are not independent certifications.</p>
+      </div>
+    </section>
+
+    <div class="directory-search" role="search" aria-label="Search the directory">
+      <label for="resource-search">Find a resource, place, or topic</label>
+      <input id="resource-search" type="search" placeholder="Search providers, projects, places, or categories…" autocomplete="off" spellcheck="false" aria-describedby="search-status">
+      <p class="search-hint">Search across resource groups and published discoveries.</p>
+      <p class="search-status" id="search-status" role="status" aria-live="polite">All directory groups are shown. Search runs locally in this browser.</p>
+    </div>
+    <p class="no-results" id="no-results" hidden>No matching items. Try another name or category.</p>
+    <noscript><p class="no-results">JavaScript is disabled. Existing resource links remain available, but search, theme selection, and the discovery editor need JavaScript.</p></noscript>
+
+    <section class="directory-section" id="source-code" aria-labelledby="source-heading">
+      <div class="section-heading"><div><span class="section-kicker">01 / Personal files</span><h2 id="source-heading">Private Resources</h2><p>Personal file directories and supporting downloads.</p></div></div>
+      <div class="resource-grid">
+        <details class="card resource-card" data-search-card>
+          <summary class="card-summary"><div class="card-top"><span class="provider-icon" aria-hidden="true">M</span><div class="card-title-wrap"><h3 class="card-title">Mega</h3><p class="card-subtitle">Cloud folder links</p></div><span class="card-chevron" aria-hidden="true">⌄</span></div></summary>
+          <div class="card-details"><ul class="resource-list">
+            <li><a href="https://mega.nz/folder/OgwlSBAD#BboTTwJeJlZB8V4rmNhZ1Q" target="_blank" rel="noopener noreferrer">Directory 20 <span class="external-mark" aria-hidden="true">↗</span></a></li>
+            <li><a href="https://mega.nz/folder/yhwFURQI#UjgZfrxgcvHk2B9ZAoK_IA" target="_blank" rel="noopener noreferrer">Directory 21 <span class="external-mark" aria-hidden="true">↗</span></a></li>
+            <li><a href="https://mega.nz/folder/ABZm2ZrS#56FEzLtEfjD_0oShWvxhjw" target="_blank" rel="noopener noreferrer">*Directory 20* <span class="external-mark" aria-hidden="true">↗</span></a></li>
+            <li><a href="https://mega.nz/folder/5MpW0CiZ#13hEn0XGuDydswBeznF7cA" target="_blank" rel="noopener noreferrer">*Directory 21* <span class="external-mark" aria-hidden="true">↗</span></a></li>
+          </ul></div>
+        </details>
+        <details class="card resource-card" data-search-card>
+          <summary class="card-summary"><div class="card-top"><span class="provider-icon" aria-hidden="true">G</span><div class="card-title-wrap"><h3 class="card-title">Google Drive</h3><p class="card-subtitle">Cloud folder links</p></div><span class="card-chevron" aria-hidden="true">⌄</span></div></summary>
+          <div class="card-details"><ul class="resource-list">
+            <li><a href="https://drive.google.com/drive/folders/1anyUJ-rcdxEGKb_m0J_YkIOPANuOCOZM" target="_blank" rel="noopener noreferrer">Directory 20 <span class="external-mark" aria-hidden="true">↗</span></a></li>
+            <li><a href="https://drive.google.com/drive/folders/106XPopHu3GkxGqOAVI9i0PpVX6CGAKAr" target="_blank" rel="noopener noreferrer">Directory 21 <span class="external-mark" aria-hidden="true">↗</span></a></li>
+          </ul></div>
+        </details>
+        <details class="card resource-card" data-search-card>
+          <summary class="card-summary"><div class="card-top"><span class="provider-icon" aria-hidden="true">MF</span><div class="card-title-wrap"><h3 class="card-title">MediaFire</h3><p class="card-subtitle">Direct links</p></div><span class="card-chevron" aria-hidden="true">⌄</span></div></summary>
+          <div class="card-details"><ul class="resource-list">
+            <li><a href="https://www.mediafire.com/folder/bvu0uy1j3wcqd/Directory--20" target="_blank" rel="noopener noreferrer">Directory 20 <span class="external-mark" aria-hidden="true">↗</span></a></li>
+            <li><a href="https://www.mediafire.com/folder/9l4iduu5dks3r/Directory--21" target="_blank" rel="noopener noreferrer">Directory 21 <span class="external-mark" aria-hidden="true">↗</span></a></li>
+          </ul></div>
+        </details>
+      </div>
+      <details class="info-disclosure security-inline" id="private-security"><summary>Encryption &amp; downloads</summary><p>Visit the <a href="#security">Security resources</a> section for the VeraCrypt information and local download references.</p></details>
+    </section>
+
+    <section class="directory-section" id="database" aria-labelledby="database-heading">
+      <div class="section-heading"><div><span class="section-kicker">02 / Project references</span><h2 id="database-heading">Database</h2><p>Project reference and directory availability.</p></div></div>
+      <div class="database-layout">
+        <details class="card resource-card" data-search-card>
+          <summary class="card-summary"><div class="card-top"><span class="provider-icon" aria-hidden="true">DB</span><div class="card-title-wrap"><h3 class="card-title">MediaFire database</h3><p class="card-subtitle">Original destinations were blank.</p></div><span class="card-chevron" aria-hidden="true">⌄</span></div></summary>
+          <div class="card-details"><ul class="resource-list">
+            <li><span class="unconfigured">Database link 1 <span class="status">Not configured</span></span></li>
+            <li><span class="unconfigured">Database link 2 <span class="status">Not configured</span></span></li>
+          </ul></div>
+        </details>
+        <details class="card resource-card" data-search-card>
+          <summary class="card-summary"><div class="card-top"><span class="provider-icon" aria-hidden="true">GH</span><div class="card-title-wrap"><h3 class="card-title">Moodiary</h3><p class="card-subtitle">GitHub tags / releases reference</p></div><span class="card-chevron" aria-hidden="true">⌄</span></div></summary>
+          <div class="card-details"><a class="moodiary-link" href="https://github.com/ZhuJHua/moodiary/tags" target="_blank" rel="noopener noreferrer"><span><strong>Moodiary</strong><small>View project tags on GitHub</small></span><span class="external-mark" aria-hidden="true">↗</span></a></div>
+        </details>
+      </div>
+    </section>
+
+    <section class="directory-section" id="recommendations" aria-labelledby="recommendations-heading">
+      <div class="section-heading"><div><span class="section-kicker">03 / Curated directory</span><h2 id="recommendations-heading">Recommended resources</h2><p>Official project pages and authorized viewing options.</p></div></div>
+      <details class="info-disclosure boxed-disclosure"><summary>How links are organized</summary><p>Official project pages and licensed viewing options are kept separate from community-submitted or third-party directories. A link being listed here is for convenience only: it is not an endorsement, a safety certification, or confirmation that a site has permission to distribute every title it lists. Availability, catalogues, rights, and terms can vary by region.</p></details>
+      <div class="resource-grid">
+        <details class="card resource-card" data-search-card><summary class="card-summary"><div class="card-top"><span class="provider-icon" aria-hidden="true">▶</span><div class="card-title-wrap"><h3 class="card-title">Movies &amp; K-dramas</h3><p class="card-subtitle">Official streaming services</p></div><span class="card-chevron" aria-hidden="true">⌄</span></div></summary><div class="card-details"><ul class="resource-list">
+          <li><a href="https://www.netflix.com/in/browse/genre/2638104" target="_blank" rel="noopener noreferrer">Netflix · K-dramas <span class="external-mark" aria-hidden="true">↗</span></a></li>
+          <li><a href="https://www.netflix.com/in-en/browse/genre/100386" target="_blank" rel="noopener noreferrer">Netflix · Korean movies &amp; shows <span class="external-mark" aria-hidden="true">↗</span></a></li>
+          <li><a href="https://www.viki.com/" target="_blank" rel="noopener noreferrer">Viki · Asian dramas <span class="external-mark" aria-hidden="true">↗</span></a></li>
+          <li><a href="https://www.primevideo.com/" target="_blank" rel="noopener noreferrer">Prime Video <span class="external-mark" aria-hidden="true">↗</span></a></li>
+        </ul></div></details>
+        <details class="card resource-card" data-search-card><summary class="card-summary"><div class="card-top"><span class="provider-icon" aria-hidden="true">ア</span><div class="card-title-wrap"><h3 class="card-title">Anime</h3><p class="card-subtitle">Licensed viewing options</p></div><span class="card-chevron" aria-hidden="true">⌄</span></div></summary><div class="card-details"><ul class="resource-list">
+          <li><a href="https://www.sonyliv.com/" target="_blank" rel="noopener noreferrer">SonyLIV · includes a Crunchyroll option in India <span class="external-mark" aria-hidden="true">↗</span></a></li>
+          <li><a href="https://help.crunchyroll.com/hc/en-us/articles/40678035831316-The-Crunchyroll-SonyLIV-channel" target="_blank" rel="noopener noreferrer">Crunchyroll on SonyLIV · availability details <span class="external-mark" aria-hidden="true">↗</span></a></li>
+          <li><a href="https://www.netflix.com/in/browse/genre/7424" target="_blank" rel="noopener noreferrer">Netflix · anime catalogue <span class="external-mark" aria-hidden="true">↗</span></a></li>
+        </ul></div></details>
+        <details class="card resource-card" data-search-card><summary class="card-summary"><div class="card-top"><span class="provider-icon" aria-hidden="true">FD</span><div class="card-title-wrap"><h3 class="card-title">Android apps</h3><p class="card-subtitle">Open-source app discovery</p></div><span class="card-chevron" aria-hidden="true">⌄</span></div></summary><div class="card-details"><ul class="resource-list">
+          <li><a href="https://f-droid.org/en/" target="_blank" rel="noopener noreferrer">F-Droid · free/open-source apps <span class="external-mark" aria-hidden="true">↗</span></a></li>
+          <li><a href="https://f-droid.org/en/docs/" target="_blank" rel="noopener noreferrer">F-Droid documentation &amp; safety notes <span class="external-mark" aria-hidden="true">↗</span></a></li>
+        </ul><p class="fine-print">Prefer the official app/repository and keep apps updated. An app being open-source does not automatically make every build or third-party repository trustworthy.</p></div></details>
+        <details class="card resource-card" data-search-card><summary class="card-summary"><div class="card-top"><span class="provider-icon" aria-hidden="true">✎</span><div class="card-title-wrap"><h3 class="card-title">Notes &amp; productivity</h3><p class="card-subtitle">Project pages and useful tools</p></div><span class="card-chevron" aria-hidden="true">⌄</span></div></summary><div class="card-details"><ul class="resource-list">
+          <li><a href="https://github.com/ZhuJHua/moodiary" target="_blank" rel="noopener noreferrer">Moodiary · source code <span class="external-mark" aria-hidden="true">↗</span></a></li>
+          <li><a href="https://github.com/ZhuJHua/moodiary/releases" target="_blank" rel="noopener noreferrer">Moodiary · releases <span class="external-mark" aria-hidden="true">↗</span></a></li>
+          <li><a href="https://docs.moodiary.net/" target="_blank" rel="noopener noreferrer">Moodiary · official documentation <span class="external-mark" aria-hidden="true">↗</span></a></li>
+          <li><a href="https://notescrafter.com/" target="_blank" rel="noopener noreferrer">NotesCrafter · PDF &amp; study tools <span class="external-mark" aria-hidden="true">↗</span></a></li>
+          <li><a href="https://play.google.com/store/apps/details?id=com.notescrafter.app" target="_blank" rel="noopener noreferrer">NotesCrafter · Google Play listing <span class="external-mark" aria-hidden="true">↗</span></a></li>
+        </ul><p class="fine-print">Before using online PDF tools, check their privacy policy and avoid processing documents containing passwords, IDs, financial records, or other sensitive information unless you understand where the data goes.</p></div></details>
+        <details class="card resource-card" data-search-card><summary class="card-summary"><div class="card-top"><span class="provider-icon" aria-hidden="true">VT</span><div class="card-title-wrap"><h3 class="card-title">Check suspicious files &amp; links</h3><p class="card-subtitle">Useful signals, not guarantees</p></div><span class="card-chevron" aria-hidden="true">⌄</span></div></summary><div class="card-details"><ul class="resource-list">
+          <li><a href="https://www.virustotal.com/gui/home/url" target="_blank" rel="noopener noreferrer">VirusTotal · check a URL <span class="external-mark" aria-hidden="true">↗</span></a></li>
+          <li><a href="https://www.virustotal.com/gui/home/upload" target="_blank" rel="noopener noreferrer">VirusTotal · file scan <span class="external-mark" aria-hidden="true">↗</span></a></li>
+          <li><a href="https://urlscan.io/" target="_blank" rel="noopener noreferrer">urlscan.io · inspect website behavior <span class="external-mark" aria-hidden="true">↗</span></a></li>
+        </ul><p class="fine-print">A clean scan does not prove a file or website is safe. Public scan submissions can expose URLs or file details; never upload confidential material or private links without checking the service's visibility and privacy settings.</p></div></details>
+        <details class="card resource-card" data-search-card><summary class="card-summary"><div class="card-top"><span class="provider-icon" aria-hidden="true">K</span><div class="card-title-wrap"><h3 class="card-title">Cybersecurity learning</h3><p class="card-subtitle">Official training &amp; references</p></div><span class="card-chevron" aria-hidden="true">⌄</span></div></summary><div class="card-details"><ul class="resource-list">
+          <li><a href="https://www.kali.org/get-kali/" target="_blank" rel="noopener noreferrer">Kali Linux · official downloads <span class="external-mark" aria-hidden="true">↗</span></a></li>
+          <li><a href="https://www.kali.org/docs/" target="_blank" rel="noopener noreferrer">Kali Linux · official documentation <span class="external-mark" aria-hidden="true">↗</span></a></li>
+          <li><a href="https://owasp.org/www-project-top-ten/" target="_blank" rel="noopener noreferrer">OWASP Top 10 · web security risks <span class="external-mark" aria-hidden="true">↗</span></a></li>
+          <li><a href="https://cheatsheetseries.owasp.org/" target="_blank" rel="noopener noreferrer">OWASP Cheat Sheet Series <span class="external-mark" aria-hidden="true">↗</span></a></li>
+        </ul><p class="fine-print">Kali is an advanced security-testing distribution, not a general-purpose “security app.” Use testing tools only on systems you own or have explicit permission to assess. Download images from official sources and verify signatures/checksums.</p></div></details>
+      </div>
+    </section>
+
+    <section class="directory-section" id="community-links" aria-labelledby="community-links-heading">
+      <div class="section-heading"><div><span class="section-kicker">04 / Unofficial directories</span><h2 id="community-links-heading">Community-submitted links</h2><p>These links are listed for convenience and are not vetted recommendations.</p></div></div>
+      <details class="info-disclosure boxed-disclosure"><summary>Use extra care</summary><p>Third-party links below have not been independently audited for ownership, licensing, privacy, advertising, malware, or content authenticity. Some may link to streams, downloads, or torrents whose authorization depends on the title and rights holder. Follow local law and rights-holder terms; do not install files or browser extensions just to view content, or enter payment details or reused passwords on unfamiliar pages.</p></details>
+      <div class="resource-grid">
+        <details class="card resource-card" data-search-card><summary class="card-summary"><div class="card-top"><span class="provider-icon" aria-hidden="true">▶</span><div class="card-title-wrap"><h3 class="card-title">Movies &amp; K-dramas</h3><p class="card-subtitle">Third-party site · user-submitted</p></div><span class="card-chevron" aria-hidden="true">⌄</span></div></summary><div class="card-details"><ul class="resource-list"><li><a href="https://katworld.net/" target="_blank" rel="noopener noreferrer">Katworld · unverified site <span class="external-mark" aria-hidden="true">↗</span></a></li></ul></div></details>
+        <details class="card resource-card" data-search-card><summary class="card-summary"><div class="card-top"><span class="provider-icon" aria-hidden="true">ア</span><div class="card-title-wrap"><h3 class="card-title">Anime</h3><p class="card-subtitle">Third-party sites · user-submitted</p></div><span class="card-chevron" aria-hidden="true">⌄</span></div></summary><div class="card-details"><ul class="resource-list">
+          <li><a href="https://toonworld4all.me/" target="_blank" rel="noopener noreferrer">Toonworld · unverified site <span class="external-mark" aria-hidden="true">↗</span></a></li>
+          <li><a href="https://new.pikahd.co/" target="_blank" rel="noopener noreferrer">PikaHD · unverified site <span class="external-mark" aria-hidden="true">↗</span></a></li>
+        </ul></div></details>
+        <details class="card resource-card" data-search-card><summary class="card-summary"><div class="card-top"><span class="provider-icon" aria-hidden="true">IDX</span><div class="card-title-wrap"><h3 class="card-title">Streaming</h3><p class="card-subtitle">Indexes linking to third-party sites</p></div><span class="card-chevron" aria-hidden="true">⌄</span></div></summary><div class="card-details"><ul class="resource-list">
+          <li><a href="https://tbcpl.net/" target="_blank" rel="noopener noreferrer">TBCPL <span class="external-mark" aria-hidden="true">↗</span></a></li>
+          <li><a href="https://yarrlist.net/" target="_blank" rel="noopener noreferrer">YarrList <span class="external-mark" aria-hidden="true">↗</span></a></li>
+          <li><a href="https://github.com/yarrlist/YarrList" target="_blank" rel="noopener noreferrer">YarrList · project repository <span class="external-mark" aria-hidden="true">↗</span></a></li>
+        </ul><p class="fine-print">TBCPL describes itself as a directory of third-party streaming links. YarrList's project README describes a broad index that includes torrent and download categories. Neither directory's own description establishes that every destination is authorized.</p></div></details>
+        <details class="card resource-card" data-search-card><summary class="card-summary"><div class="card-top"><span class="provider-icon" aria-hidden="true">APKs</span><div class="card-title-wrap"><h3 class="card-title">Modified APKs</h3><p class="card-subtitle">Unverified third-party app source</p></div><span class="card-chevron" aria-hidden="true">⌄</span></div></summary><div class="card-details"><ul class="resource-list"><li><a href="https://www.jollymod.com/" target="_blank" rel="noopener noreferrer">JollyMod <span class="external-mark" aria-hidden="true">↗</span></a></li></ul><p class="fine-print">JollyMod presents itself as a MOD APK site. Modified APKs can tamper with code, permissions, ads, subscriptions, or account flows; they may violate app terms or intellectual-property rights and can expose your device or accounts to risk. Prefer the original developer, Google Play, or a trusted official F-Droid repository. Never assume a site's “tested” or “safe” badge is independent verification.</p></div></details>
+      </div>
+    </section>
+
+    <section class="directory-section" id="discoveries" aria-labelledby="discoveries-heading">
+      <div class="section-heading"><div><span class="section-kicker">05 / Places &amp; moments</span><h2 id="discoveries-heading">Discoveries</h2><p>Interesting Google Maps locations, local shops, places to visit, photos, clips, and personal reviews.</p></div></div>
+      <div class="discovery-toolbar"><p id="discovery-status" role="status" aria-live="polite">Loading published discoveries…</p><button class="button" id="export-discoveries" type="button">Export entries as JSON</button></div>
+      <div class="discovery-grid" id="discovery-grid" aria-live="polite"></div>
+      <p class="empty-state" id="discovery-empty">No places or media have been published yet. Add a local draft below, or add public entries to <code>discoveries.json</code>.</p>
+      <details class="entry-form-panel" id="add-discovery">
+        <summary><strong>Add a place, shop, photo or clip</strong></summary>
+        <p>Save a draft on this device, then export it as JSON to publish it through GitHub Pages. No account or third-party service is used by this form.</p>
+        <form class="entry-form" id="discovery-form">
+          <div class="field"><label for="entry-name">Name / title *</label><input id="entry-name" name="name" maxlength="100" required placeholder="e.g. A great local café"></div>
+          <div class="field"><label for="entry-type">Category</label><select id="entry-type" name="type"><option>Place</option><option>Shop</option><option>Food &amp; café</option><option>Travel</option><option>Scenic location</option><option>Photo story</option><option>Video clip</option><option>Other</option></select></div>
+          <div class="field"><label for="entry-map">Google Maps link</label><input id="entry-map" name="mapUrl" type="url" placeholder="https://maps.app.goo.gl/…"><small>Use the location's Share → Copy link address.</small></div>
+          <div class="field"><label for="entry-address">Address / area</label><input id="entry-address" name="address" maxlength="240" placeholder="Locality, city"></div>
+          <div class="field"><label for="entry-owner">Owner / contact name</label><input id="entry-owner" name="owner" maxlength="100" placeholder="Optional public business contact"></div>
+          <div class="field"><label for="entry-phone">Public phone / WhatsApp</label><input id="entry-phone" name="phone" type="tel" maxlength="40" placeholder="Optional public business number"></div>
+          <div class="field"><label for="entry-website">Website</label><input id="entry-website" name="website" type="url" placeholder="https://example.com"></div>
+          <div class="field"><label for="entry-photos">Photo URLs or repository paths</label><textarea id="entry-photos" name="photos" placeholder="One image URL or relative image path per line"></textarea><small>For repository images, add the image file to your repo and enter its relative path, e.g. images/shop-front.jpg.</small></div>
+          <div class="field full"><label for="entry-videos">Clip / video URLs</label><textarea id="entry-videos" name="videos" placeholder="One video URL per line (YouTube, etc.)"></textarea></div>
+          <div class="field full"><label for="entry-review">Review / notes</label><textarea id="entry-review" name="review" maxlength="2000" placeholder="What makes this place or moment worth sharing?"></textarea></div>
+          <div class="form-actions"><button class="button primary" type="submit">Save local draft</button><button class="button" type="reset">Clear form</button></div>
+          <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
+        </form>
+      </details>
+      <details class="info-disclosure boxed-disclosure"><summary>How do I make an entry visible to everyone?</summary><p>GitHub Pages is static hosting: this form stores drafts only in this browser. Use <strong>Export entries as JSON</strong>, then add the exported objects to the <code>items</code> array in <code>discoveries.json</code> and upload any referenced images to your repository. Commit both the JSON and image files. The published page will then display them for all visitors.</p></details>
+    </section>
+
+    <section class="directory-section" id="security" aria-labelledby="security-heading">
+      <div class="section-heading"><div><span class="section-kicker">06 / Encryption &amp; downloads</span><h2 id="security-heading">Security resources</h2><p>Encryption notes and VeraCrypt downloads.</p></div></div>
+      <details class="security-panel">
+        <summary id="security-heading-summary">Security notice · VeraCrypt</summary>
+        <div class="security-content">
+          <p>The original page describes files in the <strong>Private Resources</strong> section as VeraCrypt-protected and names AES-256, Serpent, and Twofish. This page has not independently inspected the encrypted volumes or their settings, so the actual cipher configuration cannot be verified here. VeraCrypt supports multiple encryption algorithms and cascades; the selected volume settings determine which are in use.</p>
+          <p>To access a volume, open it with a compatible VeraCrypt version and provide the correct password, keyfile, and PIM if configured. Keep recovery information private and maintain separate backups.</p>
+          <p class="quote">— 𝕴𝖙𝖆𝖈𝖍𝖎</p>
+          <h3>VeraCrypt files referenced by this page</h3>
+          <ul class="download-list">
+            <li>
+              <strong>VeraCrypt Portable</strong>
+              <div class="file-reference"><span class="file-status">Local download · version 1.26.24</span><a href="./veracrypt-portable-1.26.24.exe" download="veracrypt-portable-1.26.24.exe"><code>veracrypt-portable-1.26.24.exe</code></a></div>
+              <div class="file-reference"><span class="file-status">Local SHA-256 text file</span><a href="./veracrypt-portable-1.26.24.sha256.txt" download="veracrypt-portable-1.26.24.sha256.txt"><code>veracrypt-portable-1.26.24.sha256.txt</code></a></div>
+            </li>
+            <li>
+              <strong>VeraCrypt Setup</strong>
+              <div class="file-reference"><span class="file-status">Local download · version 1.26.24</span><a href="./veracrypt-setup-1.26.24.exe" download="veracrypt-setup-1.26.24.exe"><code>veracrypt-setup-1.26.24.exe</code></a></div>
+              <div class="file-reference"><span class="file-status">Local SHA-256 text file</span><a href="./veracrypt-setup-1.26.24.sha256.txt" download="veracrypt-setup-1.26.24.sha256.txt"><code>veracrypt-setup-1.26.24.sha256.txt</code></a></div>
+            </li>
+          </ul>
+          <p class="fine-print">The four local paths above are preserved exactly. Their files were not included in the uploaded project snapshot, so their presence, contents, hashes, signatures, and authenticity remain unverified here. A checksum file only helps when its value is compared with an independently trusted reference; it does not by itself prove authenticity.</p>
+          <div class="version-note"><strong>Version note · 31 October 2026.</strong> VeraCrypt's official release information lists Windows 1.26.29 as the latest available Windows installer release; Windows 1.26.30 EXE/MSI installers were withdrawn following reported upgrade issues. Version 1.26.30 is available for macOS and Linux. The locally referenced 1.26.24 files are older. Check the official download page for current platform-specific information before installing. <a href="https://www.veracrypt.fr/en/Downloads.html" target="_blank" rel="noopener noreferrer">Open the official downloads reference <span class="external-mark" aria-hidden="true">↗</span></a></div>
+          <p class="fine-print"><strong>Vendor advisory:</strong> VeraCrypt's release notes warn that hidden volumes inside file containers created with versions 1.26.6 through 1.26.28 may affect plausible deniability. This warning concerns that specific hidden-volume scenario; it is not a statement that every VeraCrypt volume is compromised. Anyone relying on plausible deniability should read the official release notes and follow the vendor's instructions.</p>
+          <h3>Official vendor resource</h3>
+          <p><a href="https://www.veracrypt.fr/en/Downloads.html" target="_blank" rel="noopener noreferrer">VeraCrypt official downloads page <span class="external-mark" aria-hidden="true">↗</span></a></p>
+        </div>
+      </details>
+    </section>
+
+    <section class="directory-section" id="contact" aria-labelledby="contact-heading">
+      <div class="section-heading"><div><span class="section-kicker">07 / Stay connected</span><h2 id="contact-heading">Contact &amp; community</h2><p>Reach ValtVortex or follow the channel.</p></div></div>
+      <div class="contact-grid">
+        <article class="contact-card"><span class="provider-icon" aria-hidden="true">WA</span><strong>WhatsApp community</strong><p>Join the ValtVortex WhatsApp group.</p><a href="https://chat.whatsapp.com/D3fJiqRRSnb8wE9Zltk4TU?s=cl&amp;p=a&amp;mlu=4" target="_blank" rel="noopener noreferrer">Open WhatsApp invite ↗</a></article>
+        <article class="contact-card"><span class="provider-icon" aria-hidden="true">TG</span><strong>Telegram community</strong><p>Join the ValtVortex Telegram group.</p><a href="https://t.me/+zJtprI92-ms1ZTll" target="_blank" rel="noopener noreferrer">Open Telegram invite ↗</a></article>
+        <article class="contact-card"><span class="provider-icon" aria-hidden="true">YT</span><strong>YouTube channel</strong><p>Videos, clips and channel updates.</p><a href="https://www.youtube.com/@valtvortex" target="_blank" rel="noopener noreferrer">Visit @valtvortex ↗</a></article>
+      </div>
+    </section>
+
+    <div class="actions">
+      <button class="back-button" id="back-button" type="button">← Go back</button>
+      <p class="back-status" id="back-status" role="status" aria-live="polite"></p>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <p>© <span id="year">2026</span> <strong>𝓥𝖆𝖑𝓽𝓥𝖔𝖗𝖙𝖊𝖝</strong> · Resource Portal</p>
+    <p>Links are provided for convenience, not as endorsements. Verify destinations, licensing, privacy terms, and downloads before use; the site does not independently verify linked files or services.</p>
+    <p><a href="#top">Back to top ↑</a></p>
+  </footer>
+
+  <script>
+    "use strict";
+
+    const THEME_KEY = "valt-vortex-theme-v1";
+    const DISCOVERIES_KEY = "valt-vortex-discoveries-v1";
+    const themeSelect = document.getElementById("theme-select");
+    const themeColorMeta = document.getElementById("theme-color-meta");
+    const systemTheme = window.matchMedia("(prefers-color-scheme: light)");
+
+    function readStoredValue(key) {
+      try { return window.localStorage.getItem(key); }
+      catch (error) { return null; }
+    }
+
+    function writeStoredValue(key, value) {
+      try { window.localStorage.setItem(key, value); return true; }
+      catch (error) { return false; }
+    }
+
+    function updateThemeColor() {
+      if (!themeColorMeta) return;
+      const isLight = themeSelect && themeSelect.value === "light"
+        ? true
+        : themeSelect && themeSelect.value === "dark"
+          ? false
+          : systemTheme.matches;
+      themeColorMeta.setAttribute("content", isLight ? "#f4f7fa" : "#0a1017");
+    }
+
+    function applyTheme(theme) {
+      const selected = ["system", "light", "dark"].includes(theme) ? theme : "system";
+      if (selected === "system") document.documentElement.removeAttribute("data-theme");
+      else document.documentElement.setAttribute("data-theme", selected);
+      if (themeSelect) themeSelect.value = selected;
+      updateThemeColor();
+    }
+
+    applyTheme(readStoredValue(THEME_KEY) || "system");
+    if (themeSelect) {
+      themeSelect.addEventListener("change", () => {
+        applyTheme(themeSelect.value);
+        writeStoredValue(THEME_KEY, themeSelect.value);
+      });
+    }
+    if (systemTheme.addEventListener) systemTheme.addEventListener("change", updateThemeColor);
+    else if (systemTheme.addListener) systemTheme.addListener(updateThemeColor);
+
+    const yearElement = document.getElementById("year");
+    if (yearElement) yearElement.textContent = String(new Date().getFullYear());
+
+    const searchInput = document.getElementById("resource-search");
+    const searchStatus = document.getElementById("search-status");
+    const noResults = document.getElementById("no-results");
+    const resourceSections = Array.from(document.querySelectorAll("main > section.directory-section"));
+
+    function filterDirectory() {
+      if (!searchInput || !searchStatus || !noResults) return;
+      const query = searchInput.value.trim().toLocaleLowerCase();
+      let visibleCount = 0;
+
+      for (const item of document.querySelectorAll("[data-search-card]")) {
+        const matches = query === "" || item.textContent.toLocaleLowerCase().includes(query);
+        item.hidden = !matches;
+        if (matches) visibleCount += 1;
+      }
+
+      for (const section of resourceSections) {
+        const searchableItems = Array.from(section.querySelectorAll("[data-search-card]"));
+        if (searchableItems.length) section.hidden = !searchableItems.some((item) => !item.hidden);
+      }
+
+      noResults.hidden = visibleCount !== 0;
+      searchStatus.textContent = query
+        ? `${visibleCount} matching groups or discoveries are shown for “${searchInput.value.trim()}”.`
+        : "All directory groups are shown. Search runs locally in this browser.";
+    }
+
+    if (searchInput) searchInput.addEventListener("input", filterDirectory);
+
+    // Preserve the original card-body toggle behavior; native summaries and links remain untouched.
+    document.querySelectorAll("details.resource-card").forEach((card) => {
+      card.addEventListener("click", (event) => {
+        if (event.target.closest("a, button, input, select, textarea, summary")) return;
+        card.open = !card.open;
+      });
+    });
+
+    const discoveryGrid = document.getElementById("discovery-grid");
+    const discoveryEmpty = document.getElementById("discovery-empty");
+    const discoveryStatus = document.getElementById("discovery-status");
+    const discoveryForm = document.getElementById("discovery-form");
+    const formStatus = document.getElementById("form-status");
+    let publishedDiscoveries = [];
+    let localDiscoveries = readLocalDiscoveries();
+
+    function readLocalDiscoveries() {
+      const raw = readStoredValue(DISCOVERIES_KEY);
+      if (!raw) return [];
+      try {
+        const value = JSON.parse(raw);
+        return Array.isArray(value) ? value.filter(isDiscoveryRecord) : [];
+      } catch (error) { return []; }
+    }
+
+    function isDiscoveryRecord(item) {
+      return item && typeof item === "object" && typeof item.id === "string" && typeof item.name === "string";
+    }
+
+    function safeWebUrl(value) {
+      if (typeof value !== "string" || !value.trim()) return null;
+      try {
+        const url = new URL(value.trim(), window.location.href);
+        if (url.protocol !== "https:" && url.origin !== window.location.origin) return null;
+        if (url.protocol !== "https:" && url.protocol !== "http:") return null;
+        return url;
+      } catch (error) { return null; }
+    }
+
+    function safeMapUrl(value) {
+      const url = safeWebUrl(value);
+      if (!url || url.protocol !== "https:") return null;
+      const host = url.hostname.toLowerCase();
+      const allowed = host === "maps.app.goo.gl" || host === "maps.google.com" || host === "goo.gl" || host === "google.com" || host === "www.google.com";
+      if (!allowed) return null;
+      if ((host === "google.com" || host === "www.google.com") && !url.pathname.startsWith("/maps")) return null;
+      return url;
+    }
+
+    function addExternalLink(parent, label, rawUrl) {
+      const url = safeWebUrl(rawUrl);
+      if (!url) return;
+      const link = document.createElement("a");
+      link.href = url.href;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      link.textContent = label;
+      parent.append(link);
+    }
+
+    function addLineLinks(parent, values, label) {
+      if (!Array.isArray(values)) return;
+      values.slice(0, 8).forEach((value, index) => {
+        if (typeof value !== "string") return;
+        const url = safeWebUrl(value);
+        if (!url) return;
+        const link = document.createElement("a");
+        link.href = url.href;
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        link.textContent = `${label} ${index + 1}`;
+        parent.append(link);
+      });
+    }
+
+    function makeDiscoveryCard(item, isLocal) {
+      const article = document.createElement("article");
+      article.className = "discovery-card";
+      article.setAttribute("data-search-card", "");
+
+      const type = document.createElement("span");
+      type.className = "discovery-type";
+      type.textContent = typeof item.type === "string" ? item.type : "Place";
+      article.append(type);
+
+      const title = document.createElement("h3");
+      title.textContent = item.name.slice(0, 100);
+      article.append(title);
+
+      if (typeof item.address === "string" && item.address.trim()) {
+        const address = document.createElement("p");
+        address.className = "discovery-meta";
+        address.textContent = item.address.slice(0, 240);
+        article.append(address);
+      }
+      if (typeof item.owner === "string" && item.owner.trim()) {
+        const owner = document.createElement("p");
+        owner.className = "discovery-meta";
+        owner.textContent = `Contact: ${item.owner.slice(0, 100)}`;
+        article.append(owner);
+      }
+      if (typeof item.review === "string" && item.review.trim()) {
+        const review = document.createElement("p");
+        review.className = "discovery-review";
+        review.textContent = item.review.slice(0, 2000);
+        article.append(review);
+      }
+
+      const links = document.createElement("div");
+      links.className = "discovery-links";
+      const mapUrl = safeMapUrl(item.mapUrl);
+      if (mapUrl) addExternalLink(links, "Google Maps ↗", mapUrl.href);
+      addExternalLink(links, "Website ↗", item.website);
+      if (typeof item.phone === "string" && item.phone.trim()) {
+        const tel = item.phone.replace(/[^0-9+*#,;]/g, "");
+        if (tel) {
+          const phoneLink = document.createElement("a");
+          phoneLink.href = `tel:${tel}`;
+          phoneLink.textContent = "Call business";
+          links.append(phoneLink);
+        }
+      }
+      addLineLinks(links, item.videos, "Watch clip");
+      if (links.childElementCount) article.append(links);
+
+      if (Array.isArray(item.photos) && item.photos.length) {
+        const media = document.createElement("div");
+        media.className = "discovery-media";
+        item.photos.slice(0, 4).forEach((photo, index) => {
+          const url = safeWebUrl(photo);
+          if (!url) return;
+          const image = document.createElement("img");
+          image.src = url.href;
+          image.alt = `${item.name} photo ${index + 1}`;
+          image.loading = "lazy";
+          image.decoding = "async";
+          image.referrerPolicy = "no-referrer";
+          media.append(image);
+        });
+        if (media.childElementCount) article.append(media);
+      }
+
+      if (isLocal) {
+        const remove = document.createElement("button");
+        remove.type = "button";
+        remove.className = "delete-entry";
+        remove.textContent = "Remove this local draft";
+        remove.addEventListener("click", () => {
+          localDiscoveries = localDiscoveries.filter((entry) => entry.id !== item.id);
+          const saved = writeStoredValue(DISCOVERIES_KEY, JSON.stringify(localDiscoveries));
+          renderDiscoveries();
+          if (discoveryStatus) discoveryStatus.textContent = saved ? "Local draft removed from this device." : "Draft removed for this session; browser storage is unavailable.";
+        });
+        article.append(remove);
+      }
+      return article;
+    }
+
+    function allDiscoveries() {
+      const publicIds = new Set(publishedDiscoveries.map((item) => item.id));
+      return [
+        ...publishedDiscoveries.map((item) => ({ item, local: false })),
+        ...localDiscoveries.filter((item) => !publicIds.has(item.id)).map((item) => ({ item, local: true }))
+      ];
+    }
+
+    function renderDiscoveries() {
+      if (!discoveryGrid || !discoveryEmpty) return;
+      discoveryGrid.replaceChildren();
+      const entries = allDiscoveries();
+      for (const entry of entries) discoveryGrid.append(makeDiscoveryCard(entry.item, entry.local));
+      discoveryEmpty.hidden = entries.length > 0;
+      if (discoveryStatus && entries.length === 0) discoveryStatus.textContent = "No published or local discoveries yet.";
+      else if (discoveryStatus) discoveryStatus.textContent = `${entries.length} discovery entr${entries.length === 1 ? "y" : "ies"} available (${publishedDiscoveries.length} published, ${localDiscoveries.length} local draft${localDiscoveries.length === 1 ? "" : "s"}).`;
+      filterDirectory();
+    }
+
+    async function loadPublishedDiscoveries() {
+      try {
+        const dataUrl = new URL("discoveries.json", document.baseURI);
+        const response = await fetch(dataUrl.href, { headers: { Accept: "application/json" } });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const data = await response.json();
+        publishedDiscoveries = data && Array.isArray(data.items) ? data.items.filter(isDiscoveryRecord) : [];
+        renderDiscoveries();
+      } catch (error) {
+        publishedDiscoveries = [];
+        renderDiscoveries();
+        if (discoveryStatus) discoveryStatus.textContent = "Published data could not be loaded. Use GitHub Pages or a local web server; opening the HTML directly as a file may block JSON loading.";
+      }
+    }
+
+    function splitLines(value) {
+      return value.split(/\r?\n/).map((line) => line.trim()).filter(Boolean).slice(0, 8);
+    }
+
+    function validPhotoValue(value) {
+      return safeWebUrl(value) !== null;
+    }
+
+    if (discoveryForm) {
+      discoveryForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const formData = new FormData(discoveryForm);
+        const name = String(formData.get("name") || "").trim();
+        const mapUrlRaw = String(formData.get("mapUrl") || "").trim();
+        const websiteRaw = String(formData.get("website") || "").trim();
+        const phone = String(formData.get("phone") || "").trim();
+        const photos = splitLines(String(formData.get("photos") || "")).filter(validPhotoValue);
+        const videos = splitLines(String(formData.get("videos") || "")).filter((value) => safeWebUrl(value) !== null);
+
+        if (!name) { if (formStatus) formStatus.textContent = "Enter a name or title."; return; }
+        if (mapUrlRaw && !safeMapUrl(mapUrlRaw)) { if (formStatus) formStatus.textContent = "Enter a valid HTTPS Google Maps share link, or leave that field empty."; return; }
+        if (websiteRaw && !safeWebUrl(websiteRaw)) { if (formStatus) formStatus.textContent = "Website must be a valid HTTP or HTTPS address."; return; }
+        if (photos.length !== splitLines(String(formData.get("photos") || "")).length) { if (formStatus) formStatus.textContent = "One or more photo addresses were invalid. Use HTTPS links or same-site image paths."; return; }
+        if (videos.length !== splitLines(String(formData.get("videos") || "")).length) { if (formStatus) formStatus.textContent = "One or more clip addresses were invalid. Use HTTP or HTTPS links."; return; }
+
+        const record = {
+          id: `local-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+          name,
+          type: String(formData.get("type") || "Place"),
+          mapUrl: mapUrlRaw,
+          address: String(formData.get("address") || "").trim(),
+          owner: String(formData.get("owner") || "").trim(),
+          phone,
+          website: websiteRaw,
+          photos,
+          videos,
+          review: String(formData.get("review") || "").trim()
+        };
+        localDiscoveries.push(record);
+        const saved = writeStoredValue(DISCOVERIES_KEY, JSON.stringify(localDiscoveries));
+        renderDiscoveries();
+        discoveryForm.reset();
+        if (formStatus) formStatus.textContent = saved
+          ? "Saved on this device. Export the JSON and add it to discoveries.json to publish it for everyone."
+          : "Added for this session, but this browser blocked local storage. Export the JSON now to keep it.";
+      });
+    }
+
+    const exportButton = document.getElementById("export-discoveries");
+    if (exportButton) {
+      exportButton.addEventListener("click", () => {
+        const payload = { items: allDiscoveries().map((entry) => entry.item) };
+        const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+        const objectUrl = URL.createObjectURL(blob);
+        const download = document.createElement("a");
+        download.href = objectUrl;
+        download.download = "discoveries.json";
+        document.body.append(download);
+        download.click();
+        download.remove();
+        URL.revokeObjectURL(objectUrl);
+        if (discoveryStatus) discoveryStatus.textContent = "Export prepared. Replace the items array in your repository's discoveries.json with this file to publish these entries.";
+      });
+    }
+
+    const backButton = document.getElementById("back-button");
+    const backStatus = document.getElementById("back-status");
+    if (backButton && backStatus) {
+      backButton.addEventListener("click", () => {
+        if (window.history.length > 1 && document.referrer) {
+          window.history.back();
+          return;
+        }
+        let directoryHome;
+        try {
+          directoryHome = new URL("./", window.location.href);
+        } catch (error) {
+          backStatus.textContent = "Go Back is available when this page is opened from its website address.";
+          return;
+        }
+        const currentPath = window.location.pathname;
+        const indexPath = new URL("index.html", directoryHome).pathname;
+        if (currentPath !== directoryHome.pathname && currentPath !== indexPath) {
+          window.location.assign(indexPath);
+          return;
+        }
+        backStatus.textContent = "You are already on the directory home page.";
+        const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        window.scrollTo({ top: 0, left: 0, behavior: reduceMotion ? "auto" : "smooth" });
+      });
+    }
+
+    loadPublishedDiscoveries();
+  </script>
+</body>
+</html>
