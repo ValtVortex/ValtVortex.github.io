@@ -4,7 +4,12 @@ const supabaseMock = `
 export function createClient() {
   const table = (name) => ({
     select() {
-      return { eq() { return { order() { return { limit: async () => ({ data: [], error: null }) }; } }; } };
+      const query = {
+        eq() { return query; },
+        order() { return query; },
+        limit: async () => ({ data: [], error: null })
+      };
+      return query;
     },
     insert(row) {
       globalThis.__testSupabaseCalls.push({ table: name, row });
